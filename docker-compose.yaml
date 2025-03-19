@@ -1,0 +1,19 @@
+services:
+  frontend:
+    build: ./frontend
+    image: journal-frontend:latest
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/app
+
+  backend:
+    build: ./backend
+    image: journal-backend:latest
+    restart: always
+    ports:
+      - 8000:8000
+
+  auth:
+    restart: unless-stopped

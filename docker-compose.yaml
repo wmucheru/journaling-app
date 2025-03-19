@@ -5,6 +5,8 @@ services:
     restart: always
     ports:
       - 3000:3000
+    networks:
+      - app-network
     volumes:
       - ./frontend:/app
 
@@ -14,6 +16,30 @@ services:
     restart: always
     ports:
       - 8000:8000
+    networks:
+      - app-network
+
+  db:
+    image: bitnami/postgresql:14.17.0
+    restart: always
+    ports:
+      - 8000:8000
+    networks:
+      - app-network
+    volumes:
+      - ./db/data:/bitnami/postgresql
 
   auth:
+    # TODO: Setup auth provider image
     restart: unless-stopped
+    networks:
+      - app-network
+
+  ai:
+    # TODO: Setup ai provider
+    restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:

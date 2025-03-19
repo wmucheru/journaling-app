@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply text-gray-700 block font-bold;
+}
+h1 {
+  @apply text-4xl;
+}
+h2 {
+  @apply text-2xl;
+}
+h3 {
+  @apply text-xl;
+}
+h4 {
+  @apply text-base;
+}
+h5 {
+  @apply text-sm;
+}
+h6 {
+  @apply text-xs;
+}
+
+/* Buttons */
+.btn {
+  @apply inline-flex self-start justify-center items-center px-4 py-2 
+    pb-1.5 gap-1 whitespace-nowrap rounded cursor-pointer select-none;
+}
+.btn-xs {
+  @apply px-2 py-1 text-[10px];
+}
+.btn-sm {
+  @apply py-2 text-[12px];
+}
+.btn-lg {
+  @apply text-base;
+}
+.btn-block {
+  @apply flex w-full;
+}
+.btn-border {
+  @apply border border-gray-100 text-gray-500 !py-[0.45rem];
+}
+.btn-default {
+  @apply bg-gray-100 !text-gray-400;
+}
+.btn-primary {
+  @apply bg-blue-500 !text-white;
+}
+.btn-info {
+  @apply bg-blue-400 !text-white;
+}
+.btn-warning {
+  @apply bg-orange-300 !text-white;
+}
+.btn-danger {
+  @apply bg-red-500 !text-white;
+}
+.btn-success {
+  @apply bg-green-400 !text-white;
+}
+.btn:hover,
+.btn:active,
+.btn:focus {
+  @apply !outline-none;
+}
+
+.container {
+  @apply flex flex-col w-full max-w-6xl mx-auto px-4;
+}
+.container-wide {
+  @apply !max-w-[1440px];
+}
+.container-full {
+  @apply !max-w-[1920px];
+}
+
+/* Table */
+table {
+  @apply w-full;
+}
+table tr th,
+table tr td {
+  @apply text-xs;
+}
+table tr th {
+  @apply bg-slate-200 border border-slate-200 border-b-white p-2 
+    uppercase text-left;
+}
+table tr td {
+  @apply border-b border-gray-100 px-2 py-2.5 text-left align-top;
+}
+table:not(.no-hover) tr:hover td {
+  @apply bg-yellow-50 cursor-pointer;
+}
+.table-centered tr th,
+.table-centered tr td {
+  @apply align-middle;
+}
+
+/* Navigation */
+nav {
+  @apply p-4 bg-white shadow-md;
+}
+
+nav a {
+  @apply flex items-center gap-1.5 text-blue-500;
+}

@@ -1,10 +1,17 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 
 import PageAdmin from "@/components/PageAdmin";
 
-import { JournalItem } from "@/utils/types";
 import JournalList from "@/modules/journal/JournalList";
+
+import { JournalItem } from "@/utils/types";
+
+import { useAppDispatch } from "@/redux/hooks";
+import {
+  fetchJournalCategories,
+  fetchJournalEntries,
+} from "@/redux/slices/journal";
 
 /**
  *
@@ -12,7 +19,14 @@ import JournalList from "@/modules/journal/JournalList";
  *
  */
 const Journal: FC = () => {
+  const dispatch = useAppDispatch();
+
   const [entries, setEntries] = useState<JournalItem[]>([]);
+
+  useEffect(() => {
+    dispatch(fetchJournalCategories({}));
+    dispatch(fetchJournalEntries({}));
+  }, []);
 
   const onAddEntry = () => {
     setEntries((prev: JournalItem[]) => {

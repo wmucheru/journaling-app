@@ -1,4 +1,4 @@
-FROM python:3.13-alpine3.20
+FROM node:23.4.0-bookworm-slim
 
 WORKDIR /app
 

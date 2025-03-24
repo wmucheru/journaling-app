@@ -1,13 +1,10 @@
 import React, { FC } from "react";
-import dynamic from "next/dynamic";
 
 import PageAdmin from "@/components/PageAdmin";
 import Panel from "@/components/Panel";
+import ApexChart from "@/components/ApexChart";
 
 import { HEATMAP_DATA } from "@/utils/heatmap-data";
-
-// https://apexcharts.com/docs/react-charts/
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 /**
  *
@@ -19,7 +16,7 @@ const Dashboard: FC = () => {
     <PageAdmin title="Dashboard">
       <div className="flex gap-4">
         <Panel title="Summary Stats">
-          <Chart
+          <ApexChart
             options={{
               chart: {
                 height: 350,

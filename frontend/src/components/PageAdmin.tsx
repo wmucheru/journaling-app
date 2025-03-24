@@ -24,7 +24,7 @@ const PageAdmin: FC<Props> = ({ title = APP_NAME, children }) => {
 
   return (
     <Page title={title}>
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col min-h-screen w-full">
         <nav className="block">
           <div className="container flex !flex-row justify-between gap-2">
             <div className="flex gap-6">

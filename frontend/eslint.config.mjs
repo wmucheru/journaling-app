@@ -16,6 +16,7 @@ const eslintConfig = [
     // Disable linting rules
     rules: {
       "@typescript-eslint/no-unsafe-function-type": "off",
+      "@typescript-eslint/no-explicit-any": "off",
     },
   }),
 ];

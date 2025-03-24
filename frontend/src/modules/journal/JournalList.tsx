@@ -9,6 +9,11 @@ interface Props {
   data?: JournalItem[];
 }
 
+/**
+ *
+ * Journal List
+ *
+ */
 const JournalList: FC<Props> = ({ data = [] }) => {
   const [entries, setEntries] = useState<JournalItem[]>([]);
   const [activeEntry, setActiveEntry] = useState<JournalItem>({});

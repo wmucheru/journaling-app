@@ -31,23 +31,31 @@ const Journal: FC = () => {
     });
   };
 
+  const entryCount: number = entries?.length || 0;
+
   return (
     <PageAdmin title="Journal">
       <div className="flex flex-col min-h-96 gap-4">
-        <div className="block mb-0">
+        <div className="flex justify-between items-center mb-0">
           <button className="btn btn-sm btn-primary" onClick={onAddEntry}>
             <FaPlus /> New Entry
           </button>
+
+          {entryCount > 0 && (
+            <span className="text-sm text-gray-400">
+              {`Entries: ${entryCount}`}
+            </span>
+          )}
         </div>
 
         {/* TODO: Blank state UI to create your first journal item */}
-        {entries?.length === 0 && (
-          <p className="py-16 text-slate-300 text-lg uppercase text-center">
+        {entryCount === 0 && (
+          <p className="py-32 text-slate-400 text-lg uppercase text-center">
             No Entries added
           </p>
         )}
 
-        {entries?.length > 0 && <JournalList data={entries} />}
+        {entryCount > 0 && <JournalList data={entries} />}
       </div>
     </PageAdmin>
   );

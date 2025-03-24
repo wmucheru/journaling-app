@@ -1,8 +1,9 @@
 import Link from "next/link";
 import React, { FC, ReactNode } from "react";
 import { MdDashboard } from "react-icons/md";
-import { FaRegNoteSticky } from "react-icons/fa6";
+import { FaRegNoteSticky, FaUser } from "react-icons/fa6";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import Page from "@/components/Page";
 
@@ -13,7 +14,14 @@ interface Props {
   children?: ReactNode;
 }
 
+/**
+ *
+ * Admin Page template
+ *
+ */
 const PageAdmin: FC<Props> = ({ title = APP_NAME, children }) => {
+  const router = useRouter();
+
   return (
     <Page title={title}>
       <div className="flex flex-col w-full">
@@ -23,7 +31,7 @@ const PageAdmin: FC<Props> = ({ title = APP_NAME, children }) => {
               <Link href="/admin/dashboard" className="flex p-0">
                 <Image
                   src={`/img/${APP_LOGO}`}
-                  alt={APP_NAME}
+                  alt={title || ""}
                   width={200}
                   height={40}
                   className="max-h-[2rem] w-auto"
@@ -39,10 +47,19 @@ const PageAdmin: FC<Props> = ({ title = APP_NAME, children }) => {
               </Link>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
+              <FaUser className="text-gray-700" style={{ fontSize: "12px" }} />
+              {/* TODO: Set actual user name */}
               <span>William</span>
               <span>&middot;</span>
-              <span className="text-blue-500 cursor-pointer">Logout</span>
+
+              {/* TODO: Implement logout */}
+              <span
+                className="text-blue-500 cursor-pointer"
+                onClick={() => router.push("/auth/login")}
+              >
+                Logout
+              </span>
             </div>
           </div>
         </nav>

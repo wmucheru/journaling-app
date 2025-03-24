@@ -1,18 +1,76 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { FC } from "react";
+import React, { ChangeEvent, FC, FormEvent, useState } from "react";
 
+import { APP_LOGO, APP_NAME } from "@/utils/constants";
+
+/**
+ *
+ * Login Page
+ *
+ */
 const Login: FC = () => {
+  const [form, setForm] = useState<object>({});
+
   const router = useRouter();
 
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setForm((prevForm: object) => {
+      return { ...prevForm, [name]: value };
+    });
+  };
+
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    console.log(form);
+
+    router.push("/admin/dashboard");
+  };
+
   return (
-    <div className="flex flex-col">
-      <h1>Login</h1>
-      <button
-        className="btn btn-lg btn-primary"
-        onClick={() => router.push("/admin/dashboard")}
+    <div className="flex flex-col h-screen w-full">
+      <div
+        className="flex gap-12 w-full max-w-xl m-auto p-8 bg-white border 
+          border-gray-200 rounded-md shadow-lg"
       >
-        Log In
-      </button>
+        <div className="flex justify-center items-center">
+          <Image
+            src={`/img/${APP_LOGO}`}
+            alt={APP_NAME || ""}
+            width={240}
+            height={50}
+            className="max-h-[3rem] w-auto"
+          />
+        </div>
+
+        <div className="flex flex-col gap-8 grow">
+          <h1>Login</h1>
+          <form className="flex flex-col gap-4" onSubmit={onSubmit}>
+            <input
+              type="email"
+              name="email"
+              className="form-control"
+              placeholder="Email Address"
+              required={true}
+              onChange={onChange}
+            />
+
+            <input
+              type="password"
+              name="password"
+              className="form-control"
+              placeholder="Password"
+              required={true}
+              onChange={onChange}
+            />
+
+            <button className="btn btn-lg btn-primary">Log In</button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };

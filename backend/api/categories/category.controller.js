@@ -1,30 +1,29 @@
-import { Journal } from "./journal.model.js";
+import { Category } from "./category.model.js";
 
-export const JournalController = {};
+export const CategoryController = {};
 
 /**
  *
  * Fetch entries
  *
  */
-JournalController.get = async (req, res) => {
+CategoryController.get = async (req, res) => {
   const { id } = req.params;
-  const { categoryId } = req.query;
 
   try {
     if (id) {
-      const entry = {};
-      res.status(200).json(entry);
+      const category = {};
+      res.status(200).json(category);
     } else {
       const list = [];
       res.status(200).json(list);
     }
   } catch (e) {
-    console.log("JOURNAL_FETCH_ERROR: ", e);
+    console.log("CATEGORY_FETCH_ERROR: ", e);
 
     res.status(500).send({
       error: true,
-      message: "Could not fetch entries(s)",
+      message: "Could not fetch entries",
       log: e,
     });
   }
@@ -32,23 +31,23 @@ JournalController.get = async (req, res) => {
 
 /**
  *
- * Add journal entry
+ * Add category
  *
  */
-JournalController.add = async (req, res) => {
+CategoryController.add = async (req, res) => {
   try {
     const obj = req.body;
 
     // TODO: Add query
-    const entry = {};
+    const category = {};
 
     res.status(201).send({
-      entry,
-      message: "Journal entry added",
+      category,
+      message: "Category added",
       error: false,
     });
   } catch (e) {
-    console.log("JOURNAL_ADD_ERROR: ", e);
+    console.log("CATEGORY_ADD_ERROR: ", e);
 
     res.status(500).send({
       error: true,
@@ -59,24 +58,24 @@ JournalController.add = async (req, res) => {
 
 /**
  *
- * Update journal entry
+ * Update category
  *
  */
-JournalController.update = async (req, res) => {
+CategoryController.update = async (req, res) => {
   const obj = req.body;
 
   try {
     const { id } = obj;
 
     // TODO: Update query
-    const entry = {};
+    const category = {};
 
     res.status(200).send({
-      message: "Journal entry updated",
-      entry,
+      message: "Categoru updated",
+      category,
     });
   } catch (e) {
-    console.log("JOURNAL_UPDATE_ERROR: ", e);
+    console.log("CATEGORY_UPDATE_ERROR: ", e);
 
     res.status(500).send({
       error: true,
@@ -87,19 +86,19 @@ JournalController.update = async (req, res) => {
 
 /**
  *
- * Delete journal entry
+ * Delete category
  *
  */
-JournalController.remove = async (req, res) => {
+CategoryController.remove = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const entry = {};
+    const category = {};
 
-    if (!entry?.id) {
+    if (!category?.id) {
       return res.status(400).send({
         error: true,
-        message: "Could not find entry",
+        message: "Could not find category",
       });
     }
 
@@ -107,10 +106,10 @@ JournalController.remove = async (req, res) => {
 
     res.status(200).send({
       id,
-      message: "Journal entry deleted",
+      message: "Category deleted",
     });
   } catch (e) {
-    console.log("JOURNAL_DELETE_ERROR: ", e);
+    console.log("CATEGORY_DELETE_ERROR: ", e);
 
     res.status(500).send({
       error: true,

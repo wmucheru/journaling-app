@@ -7,7 +7,7 @@ import JournalList from "@/modules/journal/JournalList";
 
 import { JournalItem } from "@/utils/types";
 
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   fetchJournalCategories,
   fetchJournalEntries,
@@ -20,6 +20,10 @@ import {
  */
 const Journal: FC = () => {
   const dispatch = useAppDispatch();
+
+  const { journal, journalStatus } = useAppSelector(
+    (state: any) => state.journal
+  );
 
   const [entries, setEntries] = useState<JournalItem[]>([]);
 
@@ -46,6 +50,8 @@ const Journal: FC = () => {
   };
 
   const entryCount: number = entries?.length || 0;
+
+  console.log(journal);
 
   return (
     <PageAdmin title="Journal">

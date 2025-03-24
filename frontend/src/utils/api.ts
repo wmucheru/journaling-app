@@ -1,7 +1,5 @@
 import axios from "axios";
 
-// import { FirebaseAuth } from "@/auth/firebaseAuth";
-
 import { API_URL } from "@/utils/constants";
 
 const axiosOptions = {
@@ -29,7 +27,7 @@ export const useAPI = async (options: RequestObject) => {
 
   // Add auth header to hook options
   if (!url.includes("?ref=site") && params?.ref !== "site") {
-    // hookOptions.headers.authorization = `Bearer: ${await FirebaseAuth.currentUser.getIdToken()}`;
+    // hookOptions.headers.authorization = `Bearer: AUTH_TOKEN`;
   }
 
   const hookAxios = axios.create(hookOptions);

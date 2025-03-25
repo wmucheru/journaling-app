@@ -7,7 +7,7 @@ const router = Router();
 router.get("/", JournalController.get);
 router.get("/:id", JournalController.get);
 router.post("/", JournalController.add);
-router.put("/", JournalController.update);
+router.put("/:id", JournalController.update);
 router.delete("/:id", JournalController.remove);
 
 export default router;

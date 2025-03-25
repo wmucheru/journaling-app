@@ -5,7 +5,18 @@ import { useAPI } from "@/utils/api";
 import * as types from "@/redux/actions/actionTypes";
 import type { RootState } from "@/redux/store";
 
-const initialState = {
+interface IState {
+  journal: any[];
+  journalEntry: object;
+  journalStatus: {
+    message: string;
+    error: boolean;
+    loading: boolean;
+    saving: boolean;
+  };
+}
+
+const initialState: IState = {
   journal: [],
   journalEntry: {},
   journalStatus: {
@@ -90,11 +101,11 @@ export const updateJournalEntry = createAsyncThunk(
 
 export const deleteJournalEntry = createAsyncThunk(
   types.DELETE_JOURNAL_ENTRY,
-  async (obj: object | any, { rejectWithValue }) => {
+  async (id: string | any, { rejectWithValue }) => {
     try {
       const response = await useAPI({
         type: "DELETE",
-        url: `/journal/${obj.id}`,
+        url: `/journal/${id}`,
       });
 
       return response.data;
@@ -107,7 +118,12 @@ export const deleteJournalEntry = createAsyncThunk(
 const slice = createSlice({
   name: "journal",
   initialState,
-  reducers: {},
+  reducers: {
+    setActiveJournalEntry: (state, action) => {
+      state.journalEntry = action.payload;
+      state.journalStatus = initialState.journalStatus;
+    },
+  },
   extraReducers: (builder) => {
     /**
      *
@@ -182,9 +198,10 @@ const slice = createSlice({
     });
 
     builder.addCase(addJournalEntry.fulfilled, (state, action) => {
-      const { journal, message, error } = action.payload;
+      const { journalEntry, message, error } = action.payload;
 
-      state.journal = journal;
+      state.journal = [journalEntry, ...state.journal];
+      state.journalEntry = journalEntry;
       state.journalStatus.message = message;
       state.journalStatus.error = error;
       state.journalStatus.saving = false;
@@ -212,9 +229,12 @@ const slice = createSlice({
     });
 
     builder.addCase(updateJournalEntry.fulfilled, (state, action) => {
-      const { journal, message, error } = action.payload;
+      const { journalEntry, message, error } = action.payload;
 
-      state.journal = journal;
+      state.journal = state.journal.map((j: any) =>
+        j?.id === journalEntry?.id ? journalEntry : j
+      );
+      state.journalEntry = journalEntry;
       state.journalStatus.message = message;
       state.journalStatus.error = error;
       state.journalStatus.saving = false;
@@ -242,9 +262,9 @@ const slice = createSlice({
     });
 
     builder.addCase(deleteJournalEntry.fulfilled, (state, action) => {
-      const { journal, message, error } = action.payload;
+      const { id, message, error } = action.payload;
 
-      state.journal = journal;
+      state.journal = state.journal.filter((j: any) => j?.id !== id);
       state.journalStatus.message = message;
       state.journalStatus.error = error;
       state.journalStatus.saving = false;
@@ -253,5 +273,7 @@ const slice = createSlice({
 });
 
 export const journalState = (state: RootState) => state.journal;
+
+export const { setActiveJournalEntry } = slice.actions;
 
 export default slice.reducer;

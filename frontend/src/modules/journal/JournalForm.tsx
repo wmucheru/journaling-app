@@ -3,7 +3,11 @@ import React, { FC, FormEvent, useEffect, useState } from "react";
 import { JournalCategory, JournalItem } from "@/utils/types";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { addJournalEntry } from "@/redux/slices/journal";
+import {
+  addJournalEntry,
+  setActiveJournalEntry,
+  updateJournalEntry,
+} from "@/redux/slices/journal";
 import { fetchCategories } from "@/redux/slices/category";
 
 interface Props {
@@ -43,14 +47,24 @@ const JournalForm: FC<Props> = ({ data = {} }) => {
     });
   };
 
+  /**
+   *
+   * Save journal entry
+   *
+   */
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    setForm(() => {});
-    dispatch(addJournalEntry(form));
+    if (form?.id) {
+      dispatch(updateJournalEntry(form));
+    } else {
+      dispatch(addJournalEntry(form));
+    }
+
+    dispatch(setActiveJournalEntry({}));
   };
 
-  console.log("FORM: ", form);
+  console.log(form);
 
   return (
     <div className="flex flex-col gap-4">

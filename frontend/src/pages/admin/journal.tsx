@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 
 import PageAdmin from "@/components/PageAdmin";
@@ -8,11 +8,11 @@ import Modal from "@/components/Modal";
 import JournalList from "@/modules/journal/JournalList";
 import JournalForm from "@/modules/journal/JournalForm";
 
-import { JournalItem } from "@/utils/types";
-
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { fetchJournalEntries } from "@/redux/slices/journal";
-import { addCategory, fetchCategories } from "@/redux/slices/category";
+import {
+  fetchJournalEntries,
+  setActiveJournalEntry,
+} from "@/redux/slices/journal";
 
 /**
  *
@@ -26,49 +26,13 @@ const Journal: FC = () => {
     (state: any) => state.journal
   );
 
-  const [entries, setEntries] = useState<JournalItem[]>([]);
-
   useEffect(() => {
-    dispatch(fetchCategories({}));
     dispatch(fetchJournalEntries({}));
   }, []);
 
-  /**
-   *
-   * Close modal on successful
-   *
-   */
-  useEffect(() => {
-    if (journalEntry?.id) {
-    }
-  }, [journalEntry]);
+  const resetJournalForm = () => dispatch(setActiveJournalEntry({}));
 
-  const onAddEntry = () => {
-    const id = entries?.length + 1;
-
-    setEntries((prev: JournalItem[]) => {
-      return [
-        ...prev,
-
-        {
-          id,
-          title: `Entry #${id}`,
-          content: `Content for entry #${id}`,
-          categoryId: 1,
-        },
-      ];
-    });
-
-    dispatch(
-      addCategory({
-        name: "Test " + id,
-      })
-    );
-  };
-
-  const entryCount: number = entries?.length || 0;
-
-  console.log(journal);
+  const entryCount: number = journal?.length || 0;
 
   return (
     <PageAdmin title="Journal">
@@ -77,16 +41,18 @@ const Journal: FC = () => {
           <div className="flex gap-4">
             <Modal
               title="New Entry"
-              buttonText="New Entry"
+              buttonText={
+                <>
+                  <FaPlus /> New Entry
+                </>
+              }
               buttonClass="btn btn-sm btn-primary"
               isOpen={journalEntry?.id !== undefined}
+              onToggleClose={() => resetJournalForm()}
+              onToggleOpen={() => resetJournalForm()}
             >
               <JournalForm data={journalEntry} />
             </Modal>
-
-            <button className="btn btn-sm btn-primary" onClick={onAddEntry}>
-              <FaPlus /> New Entry
-            </button>
           </div>
 
           {entryCount > 0 && (
@@ -96,16 +62,15 @@ const Journal: FC = () => {
           )}
         </div>
 
-        <StatusMessage status={journalStatus} />
+        <StatusMessage status={journalStatus} autoClose={true} />
 
-        {/* TODO: Blank state UI to create your first journal item */}
         {entryCount === 0 && (
           <p className="py-32 text-slate-400 text-lg uppercase text-center">
-            No Entries added
+            No entries added
           </p>
         )}
 
-        {entryCount > 0 && <JournalList data={entries} />}
+        {entryCount > 0 && <JournalList data={journal} />}
       </div>
     </PageAdmin>
   );

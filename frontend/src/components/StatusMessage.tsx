@@ -32,7 +32,7 @@ const StatusMessage: FC<Props> = ({
   status = {},
   notification = false,
   autoClose = true,
-  autoCloseDuration = 3000,
+  autoCloseDuration = 2000,
 }) => {
   const [objState, setObjState] = useState<StatusObject>({});
 

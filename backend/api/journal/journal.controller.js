@@ -9,20 +9,19 @@ export const JournalController = {};
  */
 JournalController.get = async (req, res) => {
   const { id } = req.params;
-  const { categoryId } = req.query;
 
   try {
     if (id) {
-      const entry = {};
-      res.status(200).json(entry);
+      const entry = await Journal.getOne(id);
+      return res.status(200).json(entry);
     } else {
-      const list = [];
-      res.status(200).json(list);
+      const journal = await Journal.getAll(req.query);
+      return res.status(200).json(journal);
     }
   } catch (e) {
     console.log("JOURNAL_FETCH_ERROR: ", e);
 
-    res.status(500).send({
+    return res.status(500).send({
       error: true,
       message: "Could not fetch entries(s)",
       log: e,
@@ -37,20 +36,17 @@ JournalController.get = async (req, res) => {
  */
 JournalController.add = async (req, res) => {
   try {
-    const obj = req.body;
+    const journalEntry = await Journal.insert(req.body);
 
-    // TODO: Add query
-    const journal = {};
-
-    res.status(201).send({
-      journal,
+    return res.status(201).send({
+      journalEntry,
       message: "Journal entry added",
       error: false,
     });
   } catch (e) {
     console.log("JOURNAL_ADD_ERROR: ", e);
 
-    res.status(500).send({
+    return res.status(500).send({
       error: true,
       message: e,
     });
@@ -66,14 +62,11 @@ JournalController.update = async (req, res) => {
   const obj = req.body;
 
   try {
-    const { id } = obj;
+    const journalEntry = await Journal.update(obj);
 
-    // TODO: Update query
-    const entry = {};
-
-    res.status(200).send({
+    return res.status(200).send({
       message: "Journal entry updated",
-      entry,
+      journalEntry,
     });
   } catch (e) {
     console.log("JOURNAL_UPDATE_ERROR: ", e);
@@ -91,10 +84,10 @@ JournalController.update = async (req, res) => {
  *
  */
 JournalController.remove = async (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
 
   try {
-    const entry = {};
+    const entry = await Journal.getOne(id);
 
     if (!entry?.id) {
       return res.status(400).send({
@@ -103,16 +96,16 @@ JournalController.remove = async (req, res) => {
       });
     }
 
-    // TODO: Delete query
+    await Journal.deleteOne(id);
 
-    res.status(200).send({
-      id,
+    return res.status(200).send({
+      id: entry?.id,
       message: "Journal entry deleted",
     });
   } catch (e) {
     console.log("JOURNAL_DELETE_ERROR: ", e);
 
-    res.status(500).send({
+    return res.status(500).send({
       error: true,
       message: e,
     });

@@ -5,6 +5,10 @@ import JournalForm from "@/modules/journal/JournalForm";
 
 import { JournalItem } from "@/utils/types";
 
+import { useAppDispatch } from "@/redux/hooks";
+import { deleteJournalEntry } from "@/redux/slices/journal";
+import Modal from "@/components/Modal";
+
 interface Props {
   data?: JournalItem[];
 }
@@ -15,44 +19,67 @@ interface Props {
  *
  */
 const JournalList: FC<Props> = ({ data = [] }) => {
+  const dispatch = useAppDispatch();
+
   const [entries, setEntries] = useState<JournalItem[]>([]);
   const [activeEntry, setActiveEntry] = useState<JournalItem>({});
 
+  /**
+   *
+   * Load journal entry data
+   *
+   */
   useEffect(() => {
     setEntries(() => data);
   }, [data]);
 
+  /**
+   *
+   * Handle edit
+   *
+   */
   const onEdit = (entry: JournalItem) => {
-    // TODO: Open edit modal
     setActiveEntry(() => entry);
   };
 
+  /**
+   *
+   * Handle deletion
+   *
+   */
   const onDelete = (id: number | undefined) => {
-    // TODO: Open confirmation modal
+    console.log(id);
+
     if (id && confirm("Delete this entry?")) {
       setEntries((prev: JournalItem[]) => {
         return prev.filter((p: JournalItem) => p?.id !== id);
       });
 
-      // TODO: Do some API action to async delete from backend
+      dispatch(deleteJournalEntry(id));
     }
   };
 
-  console.log(activeEntry);
-
   return (
     <div className="flex flex-col gap-4">
+      <Modal
+        title={`Edit ${activeEntry?.title}`}
+        isOpen={activeEntry?.id !== undefined}
+        onToggleClose={() => setActiveEntry({})}
+      >
+        <JournalForm data={activeEntry} onSave={() => setActiveEntry({})} />
+      </Modal>
+
       {entries?.map((item: JournalItem, index: number) => {
+        const { id, title, content } = item;
+
         return (
           <div
             key={index}
             className="flex flex-col gap-4 p-4 bg-white border border-gray-100 
               shadow-lg rounded-md"
           >
-            <h4>{item?.title}</h4>
-            <div
-              dangerouslySetInnerHTML={{ __html: item?.content || "" }}
-            ></div>
+            <h4>{title}</h4>
+            <div dangerouslySetInnerHTML={{ __html: content || "" }}></div>
 
             <div className="flex gap-2">
               <button
@@ -64,7 +91,7 @@ const JournalList: FC<Props> = ({ data = [] }) => {
 
               <button
                 className="btn btn-xs btn-danger"
-                onClick={() => onDelete(item?.id)}
+                onClick={() => onDelete(id)}
               >
                 <FaTrash /> Delete
               </button>

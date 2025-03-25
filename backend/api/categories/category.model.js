@@ -39,17 +39,16 @@ const CategoryModel = DB.define(
 export const Category = {};
 
 Category.getAll = async function () {
-  return await DB.query("SELECT * from categories ORDER BY name DESC", {
+  return await DB.query("SELECT * from categories ORDER BY name ASC", {
     type: QueryTypes.SELECT,
   });
 };
 
 Category.getOne = async function (id) {
-  return await DB.query(`SELECT * from categories WHERE id=${id}`, {
-    type: QueryTypes.SELECT,
-  });
+  return await CategoryModel.findOne({ where: { id } });
 };
 
 Category.insert = async function (obj) {
-  return await CategoryModel.create(obj);
+  const insert = await CategoryModel.create(obj);
+  return Category.getOne(insert?.id);
 };

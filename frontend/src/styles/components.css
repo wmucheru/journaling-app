@@ -145,6 +145,75 @@ table:not(.no-hover) tr:hover td {
   @apply flex flex-col w-full sm:w-3/4;
 }
 
+/* Labels */
+.label {
+  @apply text-white px-2 py-1 rounded;
+}
+.label-xs {
+  @apply !text-[0.65rem];
+}
+.label-sm {
+  @apply !text-[0.8rem];
+}
+.label-default {
+  @apply bg-gray-100 text-gray-600;
+}
+.label-primary {
+  @apply bg-blue-500;
+}
+.label-info {
+  @apply bg-blue-400;
+}
+.label-warning {
+  @apply bg-orange-300;
+}
+.label-danger {
+  @apply bg-red-500;
+}
+.label-success {
+  @apply bg-green-400;
+}
+
+/* Alerts */
+.alert {
+  @apply flex w-full p-4 mb-4 border rounded px-4 py-2.5;
+}
+.alert-sm {
+  @apply p-2;
+}
+.alert-default {
+  @apply bg-gray-100 text-gray-600 border-gray-400;
+}
+.alert-primary {
+  @apply bg-blue-400 text-blue-600 border-blue-400;
+}
+.alert-info {
+  @apply bg-blue-300 text-blue-500 border-blue-400;
+}
+.alert-warning {
+  @apply bg-orange-200 text-orange-400 border-orange-200;
+}
+.alert-danger {
+  @apply bg-red-100 text-red-500 border-red-500;
+}
+.alert-success {
+  @apply bg-green-100 text-green-600 border-green-500;
+}
+.alert h4 {
+  @apply text-current;
+}
+.alert ul,
+.alert ol {
+  @apply ml-4 mt-1 mb-2;
+}
+.alert p + ul,
+.alert p + ol {
+  @apply mt-0;
+}
+.alert p {
+  @apply mb-1;
+}
+
 /* Navigation */
 nav {
   @apply p-4 text-sm bg-white shadow-md;

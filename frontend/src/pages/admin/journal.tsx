@@ -2,7 +2,6 @@ import React, { FC, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 
 import PageAdmin from "@/components/PageAdmin";
-import StatusMessage from "@/components/StatusMessage";
 import Modal from "@/components/Modal";
 
 import JournalList from "@/modules/journal/JournalList";
@@ -22,15 +21,16 @@ import {
 const Journal: FC = () => {
   const dispatch = useAppDispatch();
 
-  const { journal, journalEntry, journalStatus } = useAppSelector(
-    (state: any) => state.journal
-  );
+  const { journal } = useAppSelector((state: any) => state.journal);
 
+  /**
+   *
+   * Fetch data initially
+   *
+   */
   useEffect(() => {
     dispatch(fetchJournalEntries({}));
   }, []);
-
-  const resetJournalForm = () => dispatch(setActiveJournalEntry({}));
 
   const entryCount: number = journal?.length || 0;
 
@@ -47,11 +47,9 @@ const Journal: FC = () => {
                 </>
               }
               buttonClass="btn btn-sm btn-primary"
-              isOpen={journalEntry?.id !== undefined}
-              onToggleClose={() => resetJournalForm()}
-              onToggleOpen={() => resetJournalForm()}
+              onToggleClose={() => dispatch(setActiveJournalEntry({}))}
             >
-              <JournalForm data={journalEntry} />
+              <JournalForm />
             </Modal>
           </div>
 
@@ -61,8 +59,6 @@ const Journal: FC = () => {
             </span>
           )}
         </div>
-
-        <StatusMessage status={journalStatus} autoClose={true} />
 
         {entryCount === 0 && (
           <p className="py-32 text-slate-400 text-lg uppercase text-center">

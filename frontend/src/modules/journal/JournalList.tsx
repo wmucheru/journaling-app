@@ -1,13 +1,18 @@
 import React, { FC, useEffect, useState } from "react";
 import { FaPen, FaTrash } from "react-icons/fa";
 
+import Modal from "@/components/Modal";
+
 import JournalForm from "@/modules/journal/JournalForm";
 
 import { JournalItem } from "@/utils/types";
 
-import { useAppDispatch } from "@/redux/hooks";
-import { deleteJournalEntry } from "@/redux/slices/journal";
-import Modal from "@/components/Modal";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import {
+  deleteJournalEntry,
+  setActiveJournalEntry,
+} from "@/redux/slices/journal";
+import { fetchCategories } from "@/redux/slices/category";
 
 interface Props {
   data?: JournalItem[];
@@ -21,8 +26,18 @@ interface Props {
 const JournalList: FC<Props> = ({ data = [] }) => {
   const dispatch = useAppDispatch();
 
+  const { journalEntry } = useAppSelector((state: any) => state.journal);
+
   const [entries, setEntries] = useState<JournalItem[]>([]);
-  const [activeEntry, setActiveEntry] = useState<JournalItem>({});
+
+  /**
+   *
+   * Load initial data
+   *
+   */
+  useEffect(() => {
+    dispatch(fetchCategories({}));
+  }, []);
 
   /**
    *
@@ -35,21 +50,10 @@ const JournalList: FC<Props> = ({ data = [] }) => {
 
   /**
    *
-   * Handle edit
-   *
-   */
-  const onEdit = (entry: JournalItem) => {
-    setActiveEntry(() => entry);
-  };
-
-  /**
-   *
    * Handle deletion
    *
    */
   const onDelete = (id: number | undefined) => {
-    console.log(id);
-
     if (id && confirm("Delete this entry?")) {
       setEntries((prev: JournalItem[]) => {
         return prev.filter((p: JournalItem) => p?.id !== id);
@@ -62,11 +66,11 @@ const JournalList: FC<Props> = ({ data = [] }) => {
   return (
     <div className="flex flex-col gap-4">
       <Modal
-        title={`Edit ${activeEntry?.title}`}
-        isOpen={activeEntry?.id !== undefined}
-        onToggleClose={() => setActiveEntry({})}
+        title={`Edit ${journalEntry?.title}`}
+        isOpen={Number.isInteger(journalEntry?.id)}
+        onToggleClose={() => dispatch(setActiveJournalEntry({}))}
       >
-        <JournalForm data={activeEntry} onSave={() => setActiveEntry({})} />
+        <JournalForm />
       </Modal>
 
       {entries?.map((item: JournalItem, index: number) => {
@@ -84,7 +88,7 @@ const JournalList: FC<Props> = ({ data = [] }) => {
             <div className="flex gap-2">
               <button
                 className="btn btn-xs btn-warning"
-                onClick={() => onEdit(item)}
+                onClick={() => dispatch(setActiveJournalEntry(item))}
               >
                 <FaPen /> Edit
               </button>
@@ -99,8 +103,6 @@ const JournalList: FC<Props> = ({ data = [] }) => {
           </div>
         );
       })}
-
-      {activeEntry?.id && <JournalForm />}
     </div>
   );
 };

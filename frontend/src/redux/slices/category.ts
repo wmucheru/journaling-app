@@ -105,13 +105,13 @@ const slice = createSlice({
   extraReducers: (builder) => {
     /**
      *
-     * JOURNAL
+     * CATEGORIES
      *
      */
 
     /**
      *
-     * Fetch journal entries
+     * Fetch categories
      *
      */
     builder.addCase(fetchCategories.pending, (state) => {

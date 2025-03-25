@@ -52,3 +52,15 @@ Category.insert = async function (obj) {
   const insert = await CategoryModel.create(obj);
   return Category.getOne(insert?.id);
 };
+
+Category.update = async function (obj) {
+  const { id } = obj;
+
+  await CategoryModel.update(obj, { where: { id } });
+  return Category.getOne(id);
+};
+
+Category.delete = async function (id) {
+  await CategoryModel.destroy(id);
+  return id;
+};

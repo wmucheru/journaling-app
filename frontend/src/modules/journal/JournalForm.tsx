@@ -1,44 +1,35 @@
 import React, { FC, FormEvent, useEffect, useState } from "react";
 
-import { JournalCategory, JournalItem } from "@/utils/types";
+import { JournalCategory } from "@/utils/types";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import {
-  addJournalEntry,
-  setActiveJournalEntry,
-  updateJournalEntry,
-} from "@/redux/slices/journal";
-import { fetchCategories } from "@/redux/slices/category";
-
-interface Props {
-  data?: JournalItem;
-}
+import { addJournalEntry, updateJournalEntry } from "@/redux/slices/journal";
 
 /**
  *
- * Journal Form - Add or edit journal entries
+ * Journal Form
  *
  */
-const JournalForm: FC<Props> = ({ data = {} }) => {
+const JournalForm: FC = () => {
   const dispatch = useAppDispatch();
 
+  const { journalEntry } = useAppSelector((state: any) => state.journal);
   const { categories } = useAppSelector((state: any) => state.categories);
 
-  const [form, setForm] = useState<any>(data);
+  const [form, setForm] = useState<any>({});
 
   /**
    *
-   * Load initial data
+   * Add data to form
    *
    */
-  useEffect(() => {
-    dispatch(fetchCategories({}));
-  }, []);
+  useEffect(() => setForm(journalEntry), [journalEntry]);
 
-  useEffect(() => {
-    // setForm(() => data);
-  }, [data]);
-
+  /**
+   *
+   * Handle input change
+   *
+   */
   const onChange = (e: any) => {
     const { name, value } = e.target;
 
@@ -60,11 +51,7 @@ const JournalForm: FC<Props> = ({ data = {} }) => {
     } else {
       dispatch(addJournalEntry(form));
     }
-
-    dispatch(setActiveJournalEntry({}));
   };
-
-  console.log(form);
 
   return (
     <div className="flex flex-col gap-4">

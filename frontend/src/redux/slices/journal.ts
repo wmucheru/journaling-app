@@ -132,6 +132,7 @@ const slice = createSlice({
      */
     builder.addCase(fetchJournalEntries.pending, (state) => {
       state.journal = [];
+      state.journalEntry = {};
       state.journalStatus.loading = true;
       state.journalStatus.message = "";
     });
@@ -201,7 +202,7 @@ const slice = createSlice({
       const { journalEntry, message, error } = action.payload;
 
       state.journal = [journalEntry, ...state.journal];
-      state.journalEntry = journalEntry;
+      state.journalEntry = {};
       state.journalStatus.message = message;
       state.journalStatus.error = error;
       state.journalStatus.saving = false;
@@ -234,7 +235,7 @@ const slice = createSlice({
       state.journal = state.journal.map((j: any) =>
         j?.id === journalEntry?.id ? journalEntry : j
       );
-      state.journalEntry = journalEntry;
+      state.journalEntry = {};
       state.journalStatus.message = message;
       state.journalStatus.error = error;
       state.journalStatus.saving = false;

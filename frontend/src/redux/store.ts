@@ -6,10 +6,12 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
 
 import journalReducer from "@/redux/slices/journal";
+import categoryReducer from "@/redux/slices/category";
 
 export const store = configureStore({
   reducer: {
     journal: journalReducer,
+    categories: categoryReducer,
   },
   devTools: true,
 });

@@ -114,12 +114,12 @@ table:not(.no-hover) tr:hover td {
     content-["*"];
 }
 .form-control {
-  @apply flex w-full justify-items-start items-center border border-gray-200 
-    px-2.5 py-2 text-gray-500 rounded outline-none cursor-pointer;
+  @apply block w-full border border-gray-300 px-2.5 py-2 
+    text-gray-500 rounded outline-none cursor-pointer;
 }
 .form-control:active,
 .form-control:focus {
-  @apply bg-yellow-50;
+  @apply border-gray-400;
 }
 .form-group {
   @apply flex flex-col gap-1 mb-4 w-full;
@@ -127,6 +127,22 @@ table:not(.no-hover) tr:hover td {
 .form-group input[type="checkbox"],
 .form-group input[type="radio"] {
   @apply self-start;
+}
+
+.form-horizontal {
+  @apply flex flex-col w-full;
+}
+.form-horizontal .form-group {
+  @apply flex flex-col sm:flex-row w-full mb-6 gap-1 sm:gap-4;
+}
+.form-horizontal .control-label {
+  @apply w-full text-right;
+}
+.form-horizontal .control-label {
+  @apply justify-start sm:justify-end items-center sm:h-8 w-auto sm:w-1/4;
+}
+.form-horizontal .control-label + div {
+  @apply flex flex-col w-full sm:w-3/4;
 }
 
 /* Navigation */

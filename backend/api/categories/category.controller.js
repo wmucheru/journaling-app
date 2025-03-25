@@ -12,16 +12,16 @@ CategoryController.get = async (req, res) => {
 
   try {
     if (id) {
-      const category = {};
-      res.status(200).json(category);
+      const category = await Category.getOne(id);
+      return res.status(200).json(category);
     } else {
-      const list = [];
-      res.status(200).json(list);
+      const categories = await Category.getAll();
+      return res.status(200).json(categories);
     }
   } catch (e) {
     console.log("CATEGORY_FETCH_ERROR: ", e);
 
-    res.status(500).send({
+    return res.status(500).send({
       error: true,
       message: "Could not fetch entries",
       log: e,
@@ -36,20 +36,16 @@ CategoryController.get = async (req, res) => {
  */
 CategoryController.add = async (req, res) => {
   try {
-    const obj = req.body;
+    const category = await Category.insert(req.body);
 
-    // TODO: Add query
-    const category = {};
-
-    res.status(201).send({
+    return res.status(201).send({
       category,
       message: "Category added",
-      error: false,
     });
   } catch (e) {
     console.log("CATEGORY_ADD_ERROR: ", e);
 
-    res.status(500).send({
+    return res.status(500).send({
       error: true,
       message: e,
     });
@@ -71,7 +67,7 @@ CategoryController.update = async (req, res) => {
     const category = {};
 
     res.status(200).send({
-      message: "Categoru updated",
+      message: "Category updated",
       category,
     });
   } catch (e) {

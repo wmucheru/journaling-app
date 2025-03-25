@@ -8,7 +8,6 @@ import type { RootState } from "@/redux/store";
 const initialState = {
   journal: [],
   journalEntry: {},
-  categories: [],
   journalStatus: {
     message: "",
     error: false,
@@ -105,93 +104,6 @@ export const deleteJournalEntry = createAsyncThunk(
   }
 );
 
-/**
- *
- * Journal Entries
- *
- */
-export const fetchJournalCategories = createAsyncThunk(
-  types.FETCH_JOURNAL_CATEGORIES,
-  async (filter: object | any = {}, { rejectWithValue }) => {
-    try {
-      const response = await useAPI({
-        type: "GET",
-        url: "/categories",
-        params: filter,
-      });
-
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error?.response?.data);
-    }
-  }
-);
-
-export const fetchJournalCategory = createAsyncThunk(
-  types.FETCH_JOURNAL_CATEGORY,
-  async (id: string | any, { rejectWithValue }) => {
-    try {
-      const response = await useAPI({
-        type: "GET",
-        url: `/categories/${id}`,
-      });
-
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error?.response?.data);
-    }
-  }
-);
-
-export const addJournalCategory = createAsyncThunk(
-  types.ADD_JOURNAL_CATEGORY,
-  async (obj: object | any, { rejectWithValue }) => {
-    try {
-      const response = await useAPI({
-        type: "POST",
-        url: "/categories",
-        data: obj,
-      });
-
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error?.response?.data);
-    }
-  }
-);
-
-export const updateJournalCategory = createAsyncThunk(
-  types.UPDATE_JOURNAL_CATEGORY,
-  async (obj: object | any, { rejectWithValue }) => {
-    try {
-      const response = await useAPI({
-        type: "PUT",
-        url: `/category/${obj.id}`,
-      });
-
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error?.response?.data);
-    }
-  }
-);
-
-export const deleteJournalCategory = createAsyncThunk(
-  types.DELETE_JOURNAL_CATEGORY,
-  async (obj: object | any, { rejectWithValue }) => {
-    try {
-      const response = await useAPI({
-        type: "DELETE",
-        url: `/category/${obj.id}`,
-      });
-
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error?.response?.data);
-    }
-  }
-);
-
 const slice = createSlice({
   name: "journal",
   initialState,
@@ -266,7 +178,6 @@ const slice = createSlice({
 
       state.journalStatus.message = message;
       state.journalStatus.error = error;
-      state.journalStatus.loading = false;
       state.journalStatus.saving = false;
     });
 
@@ -276,7 +187,6 @@ const slice = createSlice({
       state.journal = journal;
       state.journalStatus.message = message;
       state.journalStatus.error = error;
-      state.journalStatus.loading = false;
       state.journalStatus.saving = false;
     });
 
@@ -307,7 +217,36 @@ const slice = createSlice({
       state.journal = journal;
       state.journalStatus.message = message;
       state.journalStatus.error = error;
+      state.journalStatus.saving = false;
+    });
+
+    /**
+     *
+     * Delete journal entry
+     *
+     */
+    builder.addCase(deleteJournalEntry.pending, (state) => {
+      state.journalEntry = {};
+      state.journalStatus.message = "";
       state.journalStatus.loading = false;
+      state.journalStatus.saving = true;
+    });
+
+    builder.addCase(deleteJournalEntry.rejected, (state, action) => {
+      const { message, error }: any = action?.payload || {};
+
+      state.journalStatus.message = message;
+      state.journalStatus.error = error;
+      state.journalStatus.loading = false;
+      state.journalStatus.saving = false;
+    });
+
+    builder.addCase(deleteJournalEntry.fulfilled, (state, action) => {
+      const { journal, message, error } = action.payload;
+
+      state.journal = journal;
+      state.journalStatus.message = message;
+      state.journalStatus.error = error;
       state.journalStatus.saving = false;
     });
   },

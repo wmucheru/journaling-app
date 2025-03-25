@@ -64,22 +64,21 @@ const Modal: FC<Props> = ({
         <div className="fixed flex flex-col inset-0 z-50" tabIndex={-1}>
           <div
             className="fixed flex flex-col p-4 h-full w-full bg-white 
-              bg-opacity-80 z-10"
+              bg-opacity-60 z-10"
             onClick={onModalClose}
           ></div>
 
           <div className="block max-w-2xl w-full m-auto p-4">
             <div
-              className={`flex flex-col relative  
-                border border-slate shadow-md rounded overflow-hidden 
-                z-20 ${modalClass}`}
+              className={`flex flex-col relative border border-gray-300 shadow-md 
+                rounded overflow-hidden z-20 ${modalClass}`}
             >
               <div className="flex px-4 py-3 items-center relative bg-gray-200">
                 <h4 className="flex flex-1 font-bold">{title}</h4>
                 <button
                   type="button"
                   title="Close"
-                  className="flex px-4 py-2 absolute text-lg right-0"
+                  className="flex px-4 py-2 absolute text-lg right-0 cursor-pointer"
                   onClick={onModalClose}
                 >
                   &times;

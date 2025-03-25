@@ -52,5 +52,6 @@ app.use(`/api/${API_VERSION}/categories`, categoryRoutes);
 app.listen(APP_PORT, APP_HOST, async () => {
   console.log(`Listening on ${APP_PORT}`);
 
-  console.log(await DB.init());
+  // Sync all models to tables in database
+  await DB.sync({});
 });

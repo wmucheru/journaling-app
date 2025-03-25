@@ -40,10 +40,10 @@ JournalController.add = async (req, res) => {
     const obj = req.body;
 
     // TODO: Add query
-    const entry = {};
+    const journal = {};
 
     res.status(201).send({
-      entry,
+      journal,
       message: "Journal entry added",
       error: false,
     });

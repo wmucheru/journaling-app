@@ -1,19 +1,18 @@
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import {
-  BCRYPT_SALT_ROUNDS,
-  JWT_SECRET,
-  JWT_TOKEN_EXPIRY,
-} from "./constants.js";
+import { JWT_SECRET, JWT_TOKEN_EXPIRY } from "./constants.js";
 
 /**
  *
  * Hash password input
  *
  */
-export const hashPassword = async (password) =>
-  await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
+export const hashPassword = async (password) => {
+  const saltRounds = 10;
+  const salt = bcrypt.genSaltSync(saltRounds);
+  return bcrypt.hashSync(password, salt);
+};
 
 /**
  *
@@ -21,7 +20,7 @@ export const hashPassword = async (password) =>
  *
  */
 export const comparePassword = async (password, hashedPassword) =>
-  await bcrypt.compare(password, hashedPassword);
+  await bcrypt.compareSync(password, hashedPassword);
 
 /**
  *
@@ -30,7 +29,6 @@ export const comparePassword = async (password, hashedPassword) =>
  */
 export const generateJWTToken = (user) =>
   jwt.sign(user, JWT_SECRET, {
-    algorithm: "RS256",
     expiresIn: JWT_TOKEN_EXPIRY,
   });
 

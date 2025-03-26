@@ -5,13 +5,15 @@
  */
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
 
-import journalReducer from "@/redux/slices/journal";
 import categoryReducer from "@/redux/slices/category";
+import journalReducer from "@/redux/slices/journal";
+import userReducer from "@/redux/slices/user";
 
 export const store = configureStore({
   reducer: {
-    journal: journalReducer,
     categories: categoryReducer,
+    journal: journalReducer,
+    users: userReducer,
   },
   devTools: true,
 });

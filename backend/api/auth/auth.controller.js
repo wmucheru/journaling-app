@@ -1,4 +1,8 @@
-import { generateJWTToken, hashPassword } from "../../utils/auth.utils.js";
+import {
+  comparePassword,
+  generateJWTToken,
+  hashPassword,
+} from "../../utils/auth.utils.js";
 import { User } from "./user.model.js";
 
 export const UserController = {};
@@ -10,7 +14,7 @@ export const UserController = {};
  */
 UserController.register = async (req, res) => {
   try {
-    const { name, email, phone, password } = req.body;
+    const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({
@@ -29,17 +33,19 @@ UserController.register = async (req, res) => {
       });
     }
 
+    // Hash password
+    const passwordHash = await hashPassword(password);
+
     // Save user
     const user = await User.insert({
       name,
       email,
-      password: hashPassword(password),
+      password: passwordHash,
     });
 
     return res.status(201).send({
       user,
       message: "Account was created successfully",
-      error: false,
     });
   } catch (e) {
     console.log("USER_REGISTER_ERROR: ", e);
@@ -73,25 +79,25 @@ UserController.login = async (req, res) => {
     if (!exists?.id) {
       return res.status(400).json({
         error: true,
-        message: "Could not find user",
+        message: "No account found with this email",
       });
     }
 
     // Login user and generate token
-    const user = await User.loginUser(email, hashPassword(password));
+    const user = await User.loginUser(email, password);
 
-    if (!user?.id) {
+    if (!user) {
       return res.status(400).json({
         error: true,
         message: "Incorrect password",
       });
     }
 
-    return res.status(200).send({
-      token: generateJWTToken(user),
-    });
+    const token = generateJWTToken(user);
+
+    return res.status(200).send({ token });
   } catch (e) {
-    console.log("USER_REGISTER_ERROR: ", e);
+    console.log("USER_LOGIN_ERROR: ", e);
 
     return res.status(500).send({
       error: true,

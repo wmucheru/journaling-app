@@ -16,6 +16,5 @@ export const DB_PASS = process.env.DB_PASS;
 export const DB_NAME = process.env.DB_NAME;
 
 // Auth
-export const BCRYPT_SALT_ROUNDS = process.env.BCRYPT_SALT_ROUNDS;
 export const JWT_SECRET = process.env.JWT_SECRET;
 export const JWT_TOKEN_EXPIRY = process.env.JWT_TOKEN_EXPIRY;

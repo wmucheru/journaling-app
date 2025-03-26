@@ -2,7 +2,7 @@
 
 /* Typography */
 a {
-  @apply text-blue-600 cursor-pointer;
+  @apply text-blue-500 cursor-pointer;
 }
 a:hover {
   @apply underline;
@@ -194,22 +194,22 @@ table:not(.no-hover) tr:hover td {
   @apply p-2;
 }
 .alert-default {
-  @apply bg-gray-100 text-gray-600 border-gray-400;
+  @apply bg-gray-100 text-gray-600 border-gray-200;
 }
 .alert-primary {
-  @apply bg-blue-400 text-blue-600 border-blue-400;
+  @apply bg-blue-400 text-blue-600 border-blue-200;
 }
 .alert-info {
-  @apply bg-blue-300 text-blue-500 border-blue-400;
+  @apply bg-blue-300 text-blue-500 border-blue-200;
 }
 .alert-warning {
   @apply bg-orange-200 text-orange-400 border-orange-200;
 }
 .alert-danger {
-  @apply bg-red-100 text-red-500 border-red-500;
+  @apply bg-red-100 text-red-500 border-red-200;
 }
 .alert-success {
-  @apply bg-green-100 text-green-600 border-green-500;
+  @apply bg-green-100 text-green-600 border-green-200;
 }
 .alert h4 {
   @apply text-current;

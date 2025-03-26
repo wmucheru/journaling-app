@@ -1,14 +1,33 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { ChangeEvent, FC, FormEvent, useState } from "react";
+import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 
 import { APP_LOGO, APP_NAME } from "@/utils/constants";
 
+import { registerUser } from "@/redux/slices/user";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import StatusMessage from "@/components/StatusMessage";
+
 const Register: FC = () => {
+  const dispatch = useAppDispatch();
+
+  const { user, userStatus } = useAppSelector((state: any) => state.users);
+
   const [form, setForm] = useState<object>({});
 
   const router = useRouter();
+
+  /**
+   *
+   * Handle registration response
+   *
+   */
+  useEffect(() => {
+    if (user?.id) {
+      router.push("/auth/login");
+    }
+  }, [user, router]);
 
   /**
    *
@@ -25,16 +44,12 @@ const Register: FC = () => {
 
   /**
    *
-   * Process login
+   * Process registration
    *
    */
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-
-    console.log(form);
-
-    // TODO: Process registration and redirect to login
-    router.push("/admin/login");
+    dispatch(registerUser(form));
   };
 
   return (
@@ -59,10 +74,12 @@ const Register: FC = () => {
             Fill in the form to create your account
           </p>
 
+          <StatusMessage status={userStatus} />
+
           <form className="flex flex-col gap-4" onSubmit={onSubmit}>
             <input
               type="text"
-              name="text"
+              name="name"
               className="form-control"
               placeholder="Full Name"
               required={true}

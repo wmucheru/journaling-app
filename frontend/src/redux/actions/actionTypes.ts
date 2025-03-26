@@ -11,9 +11,9 @@ export const ADD_CATEGORY = "category/ADD";
 export const UPDATE_CATEGORY = "category/UPDATE";
 export const DELETE_CATEGORY = "category/DELETE";
 
-// Account
-export const REGISTER = "user/REGISTER";
-export const LOGIN = "user/LOGIN";
+// Users
+export const REGISTER_USER = "user/REGISTER";
+export const LOGIN_USER = "user/LOGIN";
 export const FETCH_USER_ACCOUNT = "user/FETCH_ACCOUNT";
 export const UPDATE_USER_ACCOUNT = "user/UPDATE_ACCOUNT";
 

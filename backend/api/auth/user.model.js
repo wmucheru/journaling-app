@@ -1,6 +1,7 @@
 import { DataTypes, QueryTypes, Sequelize } from "sequelize";
 
 import { DB } from "../../utils/db.js";
+import { comparePassword } from "../../utils/auth.utils.js";
 
 const UserModel = DB.define(
   "user",
@@ -10,10 +11,6 @@ const UserModel = DB.define(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-    },
-    userId: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false,
     },
     name: {
       type: DataTypes.STRING(192),
@@ -52,39 +49,54 @@ const UserModel = DB.define(
 
 export const User = {};
 
+const attributes = ["name", "email", "createdAt"];
+
 User.getAll = async function () {
-  return await DB.query(
-    `SELECT * 
-    FROM users
-    ORDER BY id DESC`,
-    {
-      type: QueryTypes.SELECT,
-    }
-  );
+  return await UserModel.findAll({
+    attributes,
+    order: [["id", "DESC"]],
+    raw: true,
+  });
 };
 
 User.getOneById = async function (id) {
-  return await UserModel.findOne({ where: { id } });
+  return await UserModel.findOne({
+    where: { id },
+    raw: true,
+  });
 };
 
 User.getOneByEmail = async function (email) {
-  return await UserModel.findOne({ where: { email } });
+  return await UserModel.findOne({
+    where: { email },
+    raw: true,
+  });
 };
 
 User.loginUser = async function (email, password) {
-  return await UserModel.findOne({ where: { email, password } });
+  const user = await UserModel.findOne({
+    attributes: ["password"],
+    where: {
+      email,
+    },
+    raw: true,
+  });
+
+  return (await comparePassword(password, user?.password))
+    ? await User.getOneByEmail(email)
+    : false;
 };
 
 User.insert = async function (obj) {
   const insert = await UserModel.create(obj);
-  return User.getOne(insert?.id);
+  return User.getOneById(insert?.id);
 };
 
 User.update = async function (obj) {
   const { id } = obj;
 
   await UserModel.update(obj, { where: { id } });
-  return User.getOne(id);
+  return User.getOneById(id);
 };
 
 User.deleteOne = async function (id) {

@@ -1,9 +1,13 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { ChangeEvent, FC, FormEvent, useState } from "react";
+import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 
 import { APP_LOGO, APP_NAME } from "@/utils/constants";
+
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { loginUser } from "@/redux/slices/user";
+import StatusMessage from "@/components/StatusMessage";
 
 /**
  *
@@ -11,9 +15,25 @@ import { APP_LOGO, APP_NAME } from "@/utils/constants";
  *
  */
 const Login: FC = () => {
+  const dispatch = useAppDispatch();
+
+  const { user, userStatus } = useAppSelector((state: any) => state.users);
+
   const [form, setForm] = useState<object>({});
 
   const router = useRouter();
+
+  /**
+   *
+   * Handle login response
+   *
+   */
+  useEffect(() => {
+    if (user?.id) {
+      // router.push("/admin/dashboard");
+      console.log(user);
+    }
+  }, [user, router]);
 
   /**
    *
@@ -40,7 +60,7 @@ const Login: FC = () => {
 
     // TODO: Process login and redirect to dashboard
 
-    router.push("/admin/dashboard");
+    dispatch(loginUser(form));
   };
 
   return (
@@ -59,8 +79,11 @@ const Login: FC = () => {
           />
         </div>
 
-        <div className="flex flex-col gap-8 grow">
+        <div className="flex flex-col gap-4 grow">
           <h1>Login</h1>
+
+          <StatusMessage status={userStatus} />
+
           <form className="flex flex-col gap-4" onSubmit={onSubmit}>
             <input
               type="email"
@@ -82,7 +105,7 @@ const Login: FC = () => {
 
             <button className="btn btn-lg btn-primary">Log In</button>
           </form>
-          <hr />
+          <hr className="mt-4" />
           <p>
             Don&apos;t have an account?&nbsp;
             <Link href="/auth/register">Register Here</Link>

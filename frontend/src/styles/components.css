@@ -1,6 +1,13 @@
 @import "tailwindcss";
 
 /* Typography */
+a {
+  @apply text-blue-600 cursor-pointer;
+}
+a:hover {
+  @apply underline;
+}
+
 h1,
 h2,
 h3,
@@ -28,10 +35,14 @@ h6 {
   @apply text-xs;
 }
 
+hr {
+  @apply border border-gray-200;
+}
+
 /* Buttons */
 .btn {
   @apply inline-flex self-start justify-center items-center px-4 py-2 
-    pb-1.5 gap-1 whitespace-nowrap rounded cursor-pointer select-none;
+    pb-1.5 gap-1 whitespace-nowrap rounded !cursor-pointer select-none;
 }
 .btn-xs {
   @apply px-2 py-1 text-[10px];
@@ -72,6 +83,7 @@ h6 {
   @apply !outline-none;
 }
 
+/* Containers */
 .container {
   @apply flex flex-col w-full max-w-6xl mx-auto px-4;
 }

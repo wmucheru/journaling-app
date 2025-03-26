@@ -14,7 +14,16 @@ CategoryController.get = async (req, res) => {
     if (id) {
       const category = await Category.getOne(id);
       return res.status(200).json(category);
-    } else {
+    }
+
+    // Get by user
+    else if (req?.user?.id) {
+      const categories = await Category.getAllByUser(req?.user?.id);
+      return res.status(200).json(categories);
+    }
+
+    // Other
+    else {
       const categories = await Category.getAll();
       return res.status(200).json(categories);
     }
@@ -24,7 +33,6 @@ CategoryController.get = async (req, res) => {
     return res.status(500).send({
       error: true,
       message: "Could not fetch entries",
-      log: e,
     });
   }
 };
@@ -36,6 +44,9 @@ CategoryController.get = async (req, res) => {
  */
 CategoryController.add = async (req, res) => {
   try {
+    // Add `userId`
+    req.body.userId = req?.user?.id;
+
     const category = await Category.insert(req.body);
 
     return res.status(201).send({
@@ -47,7 +58,7 @@ CategoryController.add = async (req, res) => {
 
     return res.status(500).send({
       error: true,
-      message: e,
+      message: "Could not add category",
     });
   }
 };
@@ -61,10 +72,7 @@ CategoryController.update = async (req, res) => {
   const obj = req.body;
 
   try {
-    const { id } = obj;
-
-    // TODO: Update query
-    const category = {};
+    const category = await Category.update(obj);
 
     res.status(200).send({
       message: "Category updated",
@@ -75,7 +83,7 @@ CategoryController.update = async (req, res) => {
 
     res.status(500).send({
       error: true,
-      message: e,
+      message: "Could not update category",
     });
   }
 };
@@ -89,7 +97,7 @@ CategoryController.remove = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const category = {};
+    const category = await Category.getOne(id);
 
     if (!category?.id) {
       return res.status(400).send({
@@ -98,18 +106,20 @@ CategoryController.remove = async (req, res) => {
       });
     }
 
+    await Category.deleteOne(id);
+
     // TODO: Delete query
 
-    res.status(200).send({
+    return res.status(200).send({
       id,
       message: "Category deleted",
     });
   } catch (e) {
     console.log("CATEGORY_DELETE_ERROR: ", e);
 
-    res.status(500).send({
+    return res.status(500).send({
       error: true,
-      message: e,
+      message: "Could not delete category",
     });
   }
 };

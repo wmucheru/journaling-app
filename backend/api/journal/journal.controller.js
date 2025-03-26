@@ -10,11 +10,23 @@ export const JournalController = {};
 JournalController.get = async (req, res) => {
   const { id } = req.params;
 
+  console.log("USER:", req.user);
+
   try {
+    // Get one
     if (id) {
       const entry = await Journal.getOne(id);
       return res.status(200).json(entry);
-    } else {
+    }
+
+    // Get by user
+    else if (req?.user?.id) {
+      const journal = await Journal.getAllByUser(req?.user?.id);
+      return res.status(200).json(journal);
+    }
+
+    // Other
+    else {
       const journal = await Journal.getAll(req.query);
       return res.status(200).json(journal);
     }
@@ -24,7 +36,6 @@ JournalController.get = async (req, res) => {
     return res.status(500).send({
       error: true,
       message: "Could not fetch entries(s)",
-      log: e,
     });
   }
 };
@@ -36,6 +47,9 @@ JournalController.get = async (req, res) => {
  */
 JournalController.add = async (req, res) => {
   try {
+    // Add `userId`
+    req.body.userId = req?.user?.id;
+
     const journalEntry = await Journal.insert(req.body);
 
     return res.status(201).send({
@@ -48,7 +62,7 @@ JournalController.add = async (req, res) => {
 
     return res.status(500).send({
       error: true,
-      message: e,
+      message: "Could not add entry",
     });
   }
 };
@@ -73,7 +87,7 @@ JournalController.update = async (req, res) => {
 
     res.status(500).send({
       error: true,
-      message: e,
+      message: "Could not update entry",
     });
   }
 };
@@ -107,7 +121,7 @@ JournalController.remove = async (req, res) => {
 
     return res.status(500).send({
       error: true,
-      message: e,
+      message: "Could not delete entry",
     });
   }
 };

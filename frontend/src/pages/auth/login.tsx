@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { ChangeEvent, FC, FormEvent, useState } from "react";
+import Link from "next/link";
 
 import { APP_LOGO, APP_NAME } from "@/utils/constants";
 
@@ -14,6 +15,11 @@ const Login: FC = () => {
 
   const router = useRouter();
 
+  /**
+   *
+   * Handle input change
+   *
+   */
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -22,10 +28,17 @@ const Login: FC = () => {
     });
   };
 
+  /**
+   *
+   * Process login
+   *
+   */
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     console.log(form);
+
+    // TODO: Process login and redirect to dashboard
 
     router.push("/admin/dashboard");
   };
@@ -33,7 +46,7 @@ const Login: FC = () => {
   return (
     <div className="flex flex-col h-screen w-full">
       <div
-        className="flex gap-12 w-full max-w-xl m-auto p-8 bg-white border 
+        className="flex gap-12 w-full max-w-2xl m-auto p-8 bg-white border 
           border-gray-200 rounded-md shadow-lg"
       >
         <div className="flex justify-center items-center">
@@ -69,6 +82,11 @@ const Login: FC = () => {
 
             <button className="btn btn-lg btn-primary">Log In</button>
           </form>
+          <hr />
+          <p>
+            Don&apos;t have an account?&nbsp;
+            <Link href="/auth/register">Register Here</Link>
+          </p>
         </div>
       </div>
     </div>

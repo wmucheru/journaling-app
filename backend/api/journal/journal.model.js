@@ -11,6 +11,10 @@ const JournalModel = DB.define(
       autoIncrement: true,
       primaryKey: true,
     },
+    userId: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+    },
     title: {
       type: DataTypes.STRING(192),
       allowNull: false,
@@ -50,6 +54,18 @@ Journal.getAll = async function () {
   return await DB.query("SELECT * from journalEntries ORDER BY id DESC", {
     type: QueryTypes.SELECT,
   });
+};
+
+Journal.getAllByUser = async function (userId) {
+  return await DB.query(
+    `SELECT *
+    FROM journalEntries
+    WHERE userId=${userId}
+    ORDER BY id DESC`,
+    {
+      type: QueryTypes.SELECT,
+    }
+  );
 };
 
 Journal.getOne = async function (id) {

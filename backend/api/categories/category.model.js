@@ -44,6 +44,18 @@ Category.getAll = async function () {
   });
 };
 
+Category.getAllByUser = async function (userId) {
+  return await DB.query(
+    `SELECT *
+    FROM categories
+    WHERE userId=${userId}
+    ORDER BY name ASC`,
+    {
+      type: QueryTypes.SELECT,
+    }
+  );
+};
+
 Category.getOne = async function (id) {
   return await CategoryModel.findOne({ where: { id } });
 };
@@ -60,7 +72,7 @@ Category.update = async function (obj) {
   return Category.getOne(id);
 };
 
-Category.delete = async function (id) {
+Category.deleteOne = async function (id) {
   await CategoryModel.destroy(id);
   return id;
 };

@@ -4,12 +4,14 @@ import cors from "cors";
 import express, { json, urlencoded } from "express";
 
 // Routes
+import authRoutes from "./api/auth/auth.route.js";
 import journalRoutes from "./api/journal/journal.route.js";
 import categoryRoutes from "./api/categories/category.route.js";
 
 // Utils
 import { APP_HOST, APP_PORT } from "./utils/constants.js";
 import { DB } from "./utils/db.js";
+import { verifyToken } from "./utils/auth.utils.js";
 
 const app = express();
 
@@ -46,8 +48,9 @@ app.get("/", (req, res) => {
  * API
  *
  */
-app.use(`/api/${API_VERSION}/journal`, journalRoutes);
-app.use(`/api/${API_VERSION}/categories`, categoryRoutes);
+app.use(`/api/${API_VERSION}/auth`, authRoutes);
+app.use(`/api/${API_VERSION}/journal`, verifyToken, journalRoutes);
+app.use(`/api/${API_VERSION}/categories`, verifyToken, categoryRoutes);
 
 app.listen(APP_PORT, APP_HOST, async () => {
   console.log(`Listening on ${APP_PORT}`);

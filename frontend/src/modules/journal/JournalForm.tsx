@@ -46,10 +46,14 @@ const JournalForm: FC = () => {
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    if (form?.id) {
-      dispatch(updateJournalEntry(form));
+    if (!form?.categoryId) {
+      alert("Select a category");
     } else {
-      dispatch(addJournalEntry(form));
+      if (form?.id) {
+        dispatch(updateJournalEntry(form));
+      } else {
+        dispatch(addJournalEntry(form));
+      }
     }
   };
 

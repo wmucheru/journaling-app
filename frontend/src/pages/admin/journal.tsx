@@ -6,6 +6,7 @@ import Modal from "@/components/Modal";
 
 import JournalList from "@/modules/journal/JournalList";
 import JournalForm from "@/modules/journal/JournalForm";
+import CategoryList from "@/modules/categories/CategoryList";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
@@ -60,13 +61,21 @@ const Journal: FC = () => {
           )}
         </div>
 
-        {entryCount === 0 && (
-          <p className="py-32 text-slate-400 text-lg uppercase text-center">
-            No entries added
-          </p>
-        )}
+        <div className="flex gap-8">
+          <div className="flex flex-col w-full">
+            {entryCount === 0 && (
+              <p className="py-32 text-slate-400 text-lg uppercase text-center">
+                No entries added
+              </p>
+            )}
 
-        {entryCount > 0 && <JournalList data={journal} />}
+            {entryCount > 0 && <JournalList data={journal} />}
+          </div>
+
+          <div className="flex flex-col w-full max-w-xs">
+            <CategoryList />
+          </div>
+        </div>
       </div>
     </PageAdmin>
   );

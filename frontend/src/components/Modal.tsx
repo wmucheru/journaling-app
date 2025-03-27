@@ -64,7 +64,7 @@ const Modal: FC<Props> = ({
         <div className="fixed flex flex-col inset-0 z-50" tabIndex={-1}>
           <div
             className="fixed flex flex-col p-4 h-full w-full bg-white 
-              bg-opacity-60 z-10"
+              opacity-60 z-10"
             onClick={onModalClose}
           ></div>
 

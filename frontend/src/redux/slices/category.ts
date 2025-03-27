@@ -5,7 +5,18 @@ import { useAPI } from "@/utils/api";
 import * as types from "@/redux/actions/actionTypes";
 import type { RootState } from "@/redux/store";
 
-const initialState = {
+interface IState {
+  categories: any[];
+  category: object;
+  categoryStatus: {
+    message: string;
+    error: boolean;
+    loading: boolean;
+    saving: boolean;
+  };
+}
+
+const initialState: IState = {
   categories: [],
   category: {},
   categoryStatus: {
@@ -184,6 +195,7 @@ const slice = createSlice({
     builder.addCase(addCategory.fulfilled, (state, action) => {
       const { category, message, error } = action.payload;
 
+      state.categories = [category, ...state.categories];
       state.category = category;
       state.categoryStatus.message = message;
       state.categoryStatus.error = error;

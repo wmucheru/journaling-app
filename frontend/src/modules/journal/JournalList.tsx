@@ -79,18 +79,18 @@ const JournalList: FC<Props> = ({ data = [] }) => {
         return (
           <div
             key={index}
-            className="flex flex-col gap-4 p-4 bg-white border border-gray-100 
-              shadow-lg rounded-md"
+            className="flex flex-col gap-4 p-4 pr-32 bg-white border border-gray-100 
+              shadow-lg rounded-md group relative cursor-pointer"
           >
             <h4>{title}</h4>
             <div dangerouslySetInnerHTML={{ __html: content || "" }}></div>
 
-            <div className="flex gap-2">
+            <div className="hidden gap-2 group-hover:flex absolute top-4 right-4">
               <button
-                className="btn btn-xs btn-warning"
+                className="btn btn-xs btn-info"
                 onClick={() => dispatch(setActiveJournalEntry(item))}
               >
-                <FaPen /> Edit
+                <FaPen /> View
               </button>
 
               <button

@@ -39,7 +39,6 @@ export const generateJWTToken = (user) =>
  */
 export const verifyToken = (req, res, next) => {
   const token = req.header("Authorization");
-  console.log("TOKEN: ", token);
 
   if (!token) {
     return res.status(401).json({
@@ -50,9 +49,12 @@ export const verifyToken = (req, res, next) => {
 
   try {
     const tokenStr = token.replace("Bearer ", "");
+
     req.user = jwt.verify(tokenStr, JWT_SECRET);
     next();
   } catch (error) {
+    console.log(error);
+
     return res.status(401).json({
       error: true,
       message: "Could not verify user",

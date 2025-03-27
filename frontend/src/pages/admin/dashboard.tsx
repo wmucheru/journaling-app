@@ -30,30 +30,21 @@ const Dashboard: FC = () => {
 
   console.log(journalReport);
 
+  const { stats, categories } = journalReport;
+
   return (
     <PageAdmin title="Dashboard">
       <div className="flex flex-col gap-8">
         <div className="flex gap-4">
-          {[
-            {
-              total: 10,
-              label: "Journal Entries",
-            },
-            {
-              total: 3,
-              label: "Categories",
-            },
-          ].map((stat: any, index: number) => {
-            return (
-              <div
-                key={index}
-                className="flex flex-col p-4 bg-white rounded shadow-md text-center"
-              >
-                <h2 className="!text-[2em] !font-normal">{stat?.total}</h2>
-                <div className="text-xs uppercase">{stat?.label}</div>
-              </div>
-            );
-          })}
+          <div className="flex flex-col p-4 bg-white rounded shadow-md text-center">
+            <h2 className="!text-[2em] !font-normal">{stats?.journals}</h2>
+            <div className="text-xs uppercase">Journal Entries</div>
+          </div>
+
+          <div className="flex flex-col p-4 bg-white rounded shadow-md text-center">
+            <h2 className="!text-[2em] !font-normal">{stats?.categories}</h2>
+            <div className="text-xs uppercase">Categories</div>
+          </div>
         </div>
 
         <div className="flex gap-4">
@@ -77,12 +68,6 @@ const Dashboard: FC = () => {
             />
           </Panel>
 
-          <Panel title="Recent Entries">
-            <p>No entries added yet</p>
-          </Panel>
-        </div>
-
-        <div className="flex gap-4 w-full max-w-md">
           <Panel title="Categories">
             <ApexChart
               options={{
@@ -99,10 +84,10 @@ const Dashboard: FC = () => {
                     size: 350,
                   },
                 },
-                labels: ["Category 1", "Category 2", "Category 3"],
+                labels: categories?.map((c: any) => c.name),
                 colors: ["#008FFB", "#0D9618", "#FFB000"],
               }}
-              series={[14, 5, 20]}
+              series={categories?.map((c: any) => c.count)}
               type="pie"
               width="400"
             />

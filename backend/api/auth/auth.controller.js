@@ -136,6 +136,25 @@ UserController.get = async (req, res) => {
 
 /**
  *
+ * Get account
+ *
+ */
+UserController.getAccount = async (req, res) => {
+  try {
+    return res.status(200).json({ user: req.user });
+  } catch (e) {
+    console.log("ACCOUNT_FETCH_ERROR: ", e);
+
+    return res.status(500).send({
+      error: true,
+      message: "Could not fetch entries(s)",
+      log: e,
+    });
+  }
+};
+
+/**
+ *
  * Update user
  *
  */

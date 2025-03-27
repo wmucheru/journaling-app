@@ -9,6 +9,7 @@ const router = Router();
 router.post("/register", UserController.register);
 router.post("/login", UserController.login);
 
+router.get("/account", verifyToken, UserController.getAccount);
 router.get("/users", verifyToken, UserController.get);
 router.get("/users/:id", verifyToken, UserController.get);
 router.put("/users/:id", verifyToken, UserController.update);

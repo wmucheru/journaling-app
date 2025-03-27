@@ -72,7 +72,7 @@ export const getUserAccount = createAsyncThunk(
     try {
       const response = await useAPI({
         type: "GET",
-        url: "/auth/users",
+        url: "/auth/account",
         params: filter,
       });
 
@@ -106,6 +106,7 @@ const slice = createSlice({
   reducers: {
     resetUser: (state, action) => {
       state.user = action.payload;
+      state.userStatus.message = "";
     },
   },
   extraReducers: (builder) => {

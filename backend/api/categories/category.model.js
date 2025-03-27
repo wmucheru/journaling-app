@@ -11,6 +11,10 @@ const CategoryModel = DB.define(
       autoIncrement: true,
       primaryKey: true,
     },
+    userId: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+    },
     name: {
       type: DataTypes.STRING(192),
       allowNull: false,

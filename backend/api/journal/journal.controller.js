@@ -46,35 +46,25 @@ JournalController.get = async (req, res) => {
  *
  */
 JournalController.getReport = async (req, res) => {
-  // TODO: Get userId from verifying token
-  console.log(req.headers);
-
-  const { id } = req.params;
+  // Get user from token
+  const userId = req?.user?.id;
 
   try {
-    // Get one
-    if (id) {
-      const entry = await Journal.getOne(id);
-      return res.status(200).json(entry);
-    }
+    const stats = await Journal.getReportStats(userId);
+    const categories = (await Journal.getCategoryStats(userId)) || [];
 
-    // Get by user
-    else if (req?.user?.id) {
-      const journal = await Journal.getAllByUser(req?.user?.id);
-      return res.status(200).json(journal);
-    }
-
-    // Other
-    else {
-      const journal = await Journal.getAll(req.query);
-      return res.status(200).json(journal);
-    }
+    return res.status(200).json({
+      report: {
+        stats: stats?.[0] || {},
+        categories,
+      },
+    });
   } catch (e) {
     console.log("JOURNAL_FETCH_ERROR: ", e);
 
     return res.status(500).send({
       error: true,
-      message: "Could not fetch entries(s)",
+      message: "Could not fetch report",
     });
   }
 };

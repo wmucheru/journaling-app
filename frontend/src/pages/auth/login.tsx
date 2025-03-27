@@ -2,11 +2,12 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
 
 import StatusMessage from "@/components/StatusMessage";
 
 import { APP_LOGO, APP_NAME } from "@/utils/constants";
+import LocalStore from "@/utils/localStorage";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { loginUser, resetUser } from "@/redux/slices/user";
@@ -23,7 +24,7 @@ const Login: FC = () => {
 
   const [form, setForm] = useState<object>({});
 
-  const [cookies, setCookie] = useCookies(["token"]);
+  // const [cookies, setCookie] = useCookies(["token"]);
 
   const router = useRouter();
 
@@ -39,11 +40,12 @@ const Login: FC = () => {
    */
   useEffect(() => {
     if (user?.token) {
-      setCookie("token", user?.token);
+      // setCookie("token", user?.token);
+      LocalStore.set("token", user?.token);
       redirect();
     }
 
-    if (cookies?.token) {
+    if (LocalStore.get("token")) {
       dispatch(resetUser({}));
       redirect();
     }

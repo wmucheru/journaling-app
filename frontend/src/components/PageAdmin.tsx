@@ -4,7 +4,7 @@ import { MdDashboard } from "react-icons/md";
 import { FaRegNoteSticky, FaUser } from "react-icons/fa6";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
 
 import Page from "@/components/Page";
 
@@ -12,6 +12,7 @@ import { APP_LOGO, APP_NAME } from "@/utils/constants";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { getUserAccount } from "@/redux/slices/user";
+import LocalStore from "@/utils/localStorage";
 
 interface Props {
   title?: string;
@@ -28,7 +29,7 @@ const PageAdmin: FC<Props> = ({ title = APP_NAME, children }) => {
 
   const { account } = useAppSelector((state: any) => state.users);
 
-  const [cookies, removeCookie] = useCookies(["token"]);
+  // const [cookies, removeCookie] = useCookies(["token"]);
 
   const router = useRouter();
 
@@ -38,20 +39,19 @@ const PageAdmin: FC<Props> = ({ title = APP_NAME, children }) => {
    *
    */
   useEffect(() => {
-    if (!cookies?.token) {
+    if (!LocalStore.get("token")) {
       router.push("/auth/login");
     } else {
       dispatch(getUserAccount({}));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cookies]);
+  }, []);
 
   const logout = () => {
-    removeCookie("token", "");
+    // removeCookie("token", "");
+    LocalStore.remove("token");
     router.push("/auth/login");
   };
-
-  console.log(account);
 
   return (
     <Page title={title}>
@@ -80,11 +80,9 @@ const PageAdmin: FC<Props> = ({ title = APP_NAME, children }) => {
 
             <div className="flex items-center gap-2">
               <FaUser className="text-gray-700" style={{ fontSize: "12px" }} />
-              {/* TODO: Set actual user name */}
-              <span>William</span>
+              <span>{account?.name}</span>
               <span>&middot;</span>
 
-              {/* TODO: Implement logout */}
               <span
                 className="text-blue-500 cursor-pointer"
                 onClick={() => logout()}

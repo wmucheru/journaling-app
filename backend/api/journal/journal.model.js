@@ -89,8 +89,8 @@ Journal.deleteOne = async function (id) {
   return id;
 };
 
-Journal.getReport = async function (userId) {
-  return await JournalModel.query(
+Journal.getReportStats = async function (userId) {
+  return await DB.query(
     `SELECT
       (SELECT COUNT(*)
         FROM journalEntries
@@ -102,6 +102,23 @@ Journal.getReport = async function (userId) {
 
       FROM journalEntries
       LIMIT 1
+    `,
+    {
+      type: QueryTypes.SELECT,
+    }
+  );
+};
+
+Journal.getCategoryStats = async function (userId) {
+  return await DB.query(
+    `SELECT
+      name,
+
+      (SELECT COUNT(*)
+        FROM journalEntries
+        WHERE categoryId=${userId}) AS count
+
+      FROM categories
     `,
     {
       type: QueryTypes.SELECT,

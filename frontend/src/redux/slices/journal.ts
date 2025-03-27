@@ -204,7 +204,7 @@ const slice = createSlice({
      *
      */
     builder.addCase(fetchJournalReport.pending, (state) => {
-      state.journalEntry = {};
+      state.journalReport = {};
       state.journalStatus.loading = true;
       state.journalStatus.saving = false;
       state.journalStatus.message = "";
@@ -219,7 +219,7 @@ const slice = createSlice({
     });
 
     builder.addCase(fetchJournalReport.fulfilled, (state, action) => {
-      const { report, error, message } = action.payload;
+      const { report, error, message } = action?.payload || {};
 
       state.journalReport = report;
       state.journalStatus.error = error;

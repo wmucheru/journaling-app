@@ -1,6 +1,6 @@
 export const HEATMAP_DATA = [
   {
-    name: "Metric1",
+    name: "January",
     data: [
       {
         x: "1",
@@ -77,7 +77,7 @@ export const HEATMAP_DATA = [
     ],
   },
   {
-    name: "Metric2",
+    name: "February",
     data: [
       {
         x: "1",
@@ -154,7 +154,7 @@ export const HEATMAP_DATA = [
     ],
   },
   {
-    name: "Metric3",
+    name: "March",
     data: [
       {
         x: "1",
@@ -231,7 +231,7 @@ export const HEATMAP_DATA = [
     ],
   },
   {
-    name: "Metric4",
+    name: "April",
     data: [
       {
         x: "1",
@@ -308,7 +308,7 @@ export const HEATMAP_DATA = [
     ],
   },
   {
-    name: "Metric5",
+    name: "May",
     data: [
       {
         x: "1",
@@ -385,7 +385,7 @@ export const HEATMAP_DATA = [
     ],
   },
   {
-    name: "Metric6",
+    name: "June",
     data: [
       {
         x: "1",
@@ -462,7 +462,7 @@ export const HEATMAP_DATA = [
     ],
   },
   {
-    name: "Metric7",
+    name: "July",
     data: [
       {
         x: "1",
@@ -539,7 +539,7 @@ export const HEATMAP_DATA = [
     ],
   },
   {
-    name: "Metric8",
+    name: "August",
     data: [
       {
         x: "1",
@@ -615,81 +615,4 @@ export const HEATMAP_DATA = [
       },
     ],
   },
-  {
-    name: "Metric9",
-    data: [
-      {
-        x: "1",
-        y: 36,
-      },
-      {
-        x: "2",
-        y: 51,
-      },
-      {
-        x: "3",
-        y: 5,
-      },
-      {
-        x: "4",
-        y: 10,
-      },
-      {
-        x: "5",
-        y: 74,
-      },
-      {
-        x: "6",
-        y: 18,
-      },
-      {
-        x: "7",
-        y: 25,
-      },
-      {
-        x: "8",
-        y: 81,
-      },
-      {
-        x: "9",
-        y: 54,
-      },
-      {
-        x: "10",
-        y: 21,
-      },
-      {
-        x: "11",
-        y: 84,
-      },
-      {
-        x: "12",
-        y: 11,
-      },
-      {
-        x: "13",
-        y: 40,
-      },
-      {
-        x: "14",
-        y: 34,
-      },
-      {
-        x: "15",
-        y: 58,
-      },
-      {
-        x: "16",
-        y: 46,
-      },
-      {
-        x: "17",
-        y: 70,
-      },
-      {
-        x: "18",
-        y: 38,
-      },
-    ],
-  },
-];
+].reverse();

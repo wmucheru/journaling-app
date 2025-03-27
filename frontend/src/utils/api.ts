@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { API_URL } from "@/utils/constants";
+import LocalStore from "./localStorage";
 
 const axiosOptions = {
   baseURL: API_URL,
@@ -27,7 +28,8 @@ export const useAPI = async (options: RequestObject) => {
 
   // Add auth header to hook options
   if (!url.includes("?ref=site") && params?.ref !== "site") {
-    // hookOptions.headers.authorization = `Bearer: AUTH_TOKEN`;
+    const token = LocalStore.get("token");
+    hookOptions.headers.authorization = `Bearer ${token}`;
   }
 
   const hookAxios = axios.create(hookOptions);

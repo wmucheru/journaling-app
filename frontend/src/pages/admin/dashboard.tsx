@@ -8,6 +8,7 @@ import { HEATMAP_DATA } from "@/utils/heatmap-data";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { fetchJournalReport } from "@/redux/slices/journal";
+import Link from "next/link";
 
 /**
  *
@@ -37,12 +38,14 @@ const Dashboard: FC = () => {
       <div className="flex flex-col gap-8">
         <div className="flex gap-4">
           <div className="flex flex-col p-4 bg-white rounded shadow-md text-center">
-            <h2 className="!text-[2em] !font-normal">{stats?.journals}</h2>
+            <h2 className="!text-[2em] !font-normal">{stats?.journals || 0}</h2>
             <div className="text-xs uppercase">Journal Entries</div>
           </div>
 
           <div className="flex flex-col p-4 bg-white rounded shadow-md text-center">
-            <h2 className="!text-[2em] !font-normal">{stats?.categories}</h2>
+            <h2 className="!text-[2em] !font-normal">
+              {stats?.categories || 0}
+            </h2>
             <div className="text-xs uppercase">Categories</div>
           </div>
         </div>
@@ -69,28 +72,37 @@ const Dashboard: FC = () => {
           </Panel>
 
           <Panel title="Categories">
-            <ApexChart
-              options={{
-                enabled: true,
-                title: {
-                  text: "",
-                },
-                chart: {
-                  // height: 350,
-                },
-                formatter: (val: number) => `${val}%`,
-                plotOptions: {
-                  pie: {
-                    size: 350,
+            {categories?.length === 0 && (
+              <div className="block mt-[20%] text-center text-gray-500">
+                Go to <Link href="/admin/journal">Journal</Link> to add
+                categories
+              </div>
+            )}
+
+            {categories?.length > 0 && (
+              <ApexChart
+                options={{
+                  enabled: true,
+                  title: {
+                    text: "",
                   },
-                },
-                labels: categories?.map((c: any) => c.name),
-                colors: ["#008FFB", "#0D9618", "#FFB000"],
-              }}
-              series={categories?.map((c: any) => c.count)}
-              type="pie"
-              width="400"
-            />
+                  chart: {
+                    // height: 350,
+                  },
+                  formatter: (val: number) => `${val}%`,
+                  plotOptions: {
+                    pie: {
+                      size: 350,
+                    },
+                  },
+                  labels: categories?.map((c: any) => c.name),
+                  colors: ["#008FFB", "#0D9618", "#FFB000"],
+                }}
+                series={categories?.map((c: any) => c.count)}
+                type="pie"
+                width="400"
+              />
+            )}
           </Panel>
         </div>
       </div>

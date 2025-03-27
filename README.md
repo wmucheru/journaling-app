@@ -24,3 +24,15 @@ The frontend is powered by NextJS. To run the frontend in development, ensure th
 - `npm install`
 - `npm run dev`
 - Open `http://localhost:3000` on your browser
+
+### Testing
+
+FRONTEND:
+
+- TODO: Add e2e, component tests
+- TODO: Add integration tests with backend
+
+BACKEND:
+
+- TODO: Add unit tests
+- TODO: Add integration tests

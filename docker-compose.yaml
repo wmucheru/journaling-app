@@ -1,19 +1,19 @@
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: ./Dockerfile.dev
-    image: shamiri/journal-frontend:latest
-    container_name: journal-frontend
-    restart: unless-stopped
-    ports:
-      - 3000:3000
-    networks:
-      - app-network
-    volumes:
-      - ./frontend:/app
-    depends_on:
-      - backend
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: ./Dockerfile.dev
+  #   image: shamiri/journal-frontend:latest
+  #   container_name: journal-frontend
+  #   restart: unless-stopped
+  #   ports:
+  #     - 3000:3000
+  #   networks:
+  #     - app-network
+  #   volumes:
+  #     - ./frontend:/app
+  #   depends_on:
+  #     - backend
 
   backend:
     build: ./backend

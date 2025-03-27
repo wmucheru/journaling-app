@@ -49,7 +49,7 @@ const UserModel = DB.define(
 
 export const User = {};
 
-const attributes = ["name", "email", "createdAt"];
+const attributes = ["id", "name", "email", "createdAt"];
 
 User.getAll = async function () {
   return await UserModel.findAll({
@@ -61,6 +61,7 @@ User.getAll = async function () {
 
 User.getOneById = async function (id) {
   return await UserModel.findOne({
+    attributes,
     where: { id },
     raw: true,
   });
@@ -68,6 +69,7 @@ User.getOneById = async function (id) {
 
 User.getOneByEmail = async function (email) {
   return await UserModel.findOne({
+    attributes,
     where: { email },
     raw: true,
   });

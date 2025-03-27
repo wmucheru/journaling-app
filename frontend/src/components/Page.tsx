@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { FC, ReactNode, useEffect } from "react";
+import { FC, ReactNode } from "react";
 
 import { APP_LOGO, APP_NAME, APP_URL } from "@/utils/constants";
 
@@ -10,18 +10,12 @@ interface Props {
   className?: string;
 }
 
-const Page: FC<Props> = ({ title = APP_NAME, children, className, pageId }) => {
-  useEffect(() => {
-    if (pageId !== undefined) {
-      document.body.dataset["page"] = pageId;
-    }
-  }, [pageId]);
-
+const Page: FC<Props> = ({ title = APP_NAME, children }) => {
   const titleStr = title ? `${title} - ` : "";
   const logoUrl = `/img/${APP_LOGO}`;
 
   return (
-    <div className={`${className} flex flex-col`}>
+    <div className="flex flex-col">
       <Head>
         <title>{`${titleStr}${APP_NAME}`}</title>
 

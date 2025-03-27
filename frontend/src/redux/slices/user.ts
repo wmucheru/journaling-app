@@ -7,6 +7,7 @@ import type { RootState } from "@/redux/store";
 
 interface IState {
   user: object;
+  account: object;
   userStatus: {
     message: string;
     error: boolean;
@@ -17,6 +18,7 @@ interface IState {
 
 const initialState: IState = {
   user: {},
+  account: {},
   userStatus: {
     message: "",
     error: false,
@@ -101,7 +103,11 @@ export const updateUserAccount = createAsyncThunk(
 const slice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    resetUser: (state, action) => {
+      state.user = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     /**
      *
@@ -150,9 +156,9 @@ const slice = createSlice({
     });
 
     builder.addCase(loginUser.fulfilled, (state, action) => {
-      const { user } = action.payload;
+      const { token } = action.payload;
 
-      state.user = user;
+      state.user = { token };
       state.userStatus.loading = false;
     });
 
@@ -163,6 +169,7 @@ const slice = createSlice({
      */
     builder.addCase(getUserAccount.pending, (state) => {
       state.user = {};
+      state.account = {};
       state.userStatus.loading = false;
       state.userStatus.saving = true;
     });
@@ -178,7 +185,7 @@ const slice = createSlice({
     builder.addCase(getUserAccount.fulfilled, (state, action) => {
       const { user, message, error } = action.payload;
 
-      state.user = user;
+      state.account = user;
       state.userStatus.message = message;
       state.userStatus.error = error;
       state.userStatus.saving = false;
@@ -217,5 +224,7 @@ const slice = createSlice({
 });
 
 export const userState = (state: RootState) => state.users;
+
+export const { resetUser } = slice.actions;
 
 export default slice.reducer;

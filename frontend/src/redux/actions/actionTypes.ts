@@ -5,6 +5,8 @@ export const ADD_JOURNAL_ENTRY = "journal/ADD";
 export const UPDATE_JOURNAL_ENTRY = "journal/UPDATE";
 export const DELETE_JOURNAL_ENTRY = "journal/DELETE";
 
+export const FETCH_JOURNAL_REPORT = "journal/FETCH_REPORT";
+
 export const FETCH_CATEGORIES = "category/FETCH_ALL";
 export const FETCH_CATEGORY = "category/FETCH_ONE";
 export const ADD_CATEGORY = "category/ADD";

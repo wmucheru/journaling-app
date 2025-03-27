@@ -44,7 +44,7 @@ export const verifyToken = (req, res, next) => {
   if (!token) {
     return res.status(401).json({
       error: true,
-      message: "User not authorized",
+      message: "Unauthorized",
     });
   }
 

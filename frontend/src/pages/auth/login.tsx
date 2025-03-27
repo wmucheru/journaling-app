@@ -2,12 +2,14 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
+import { useCookies } from "react-cookie";
+
+import StatusMessage from "@/components/StatusMessage";
 
 import { APP_LOGO, APP_NAME } from "@/utils/constants";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { loginUser } from "@/redux/slices/user";
-import StatusMessage from "@/components/StatusMessage";
+import { loginUser, resetUser } from "@/redux/slices/user";
 
 /**
  *
@@ -21,7 +23,14 @@ const Login: FC = () => {
 
   const [form, setForm] = useState<object>({});
 
+  const [cookies, setCookie] = useCookies(["token"]);
+
   const router = useRouter();
+
+  const redirect = () => {
+    dispatch(resetUser({}));
+    router.push("/admin/dashboard");
+  };
 
   /**
    *
@@ -29,11 +38,17 @@ const Login: FC = () => {
    *
    */
   useEffect(() => {
-    if (user?.id) {
-      // router.push("/admin/dashboard");
-      console.log(user);
+    if (user?.token) {
+      setCookie("token", user?.token);
+      redirect();
     }
-  }, [user, router]);
+
+    if (cookies?.token) {
+      dispatch(resetUser({}));
+      redirect();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.token]);
 
   /**
    *
@@ -55,11 +70,6 @@ const Login: FC = () => {
    */
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-
-    console.log(form);
-
-    // TODO: Process login and redirect to dashboard
-
     dispatch(loginUser(form));
   };
 
@@ -106,10 +116,10 @@ const Login: FC = () => {
             <button className="btn btn-lg btn-primary">Log In</button>
           </form>
           <hr className="mt-4" />
-          <p>
+          <div>
             Don&apos;t have an account?&nbsp;
             <Link href="/auth/register">Register Here</Link>
-          </p>
+          </div>
         </div>
       </div>
     </div>

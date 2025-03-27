@@ -75,6 +75,7 @@ UserController.login = async (req, res) => {
 
     // Check if user exists
     const exists = await User.getOneByEmail(email);
+    console.log(exists);
 
     if (!exists?.id) {
       return res.status(400).json({
@@ -95,7 +96,7 @@ UserController.login = async (req, res) => {
 
     const token = generateJWTToken(user);
 
-    return res.status(200).send({ token });
+    return res.status(200).send({ user, token });
   } catch (e) {
     console.log("USER_LOGIN_ERROR: ", e);
 

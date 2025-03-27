@@ -1,13 +1,17 @@
 import Link from "next/link";
-import React, { FC, ReactNode } from "react";
+import React, { FC, ReactNode, useEffect } from "react";
 import { MdDashboard } from "react-icons/md";
 import { FaRegNoteSticky, FaUser } from "react-icons/fa6";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useCookies } from "react-cookie";
 
 import Page from "@/components/Page";
 
 import { APP_LOGO, APP_NAME } from "@/utils/constants";
+
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { getUserAccount } from "@/redux/slices/user";
 
 interface Props {
   title?: string;
@@ -20,7 +24,34 @@ interface Props {
  *
  */
 const PageAdmin: FC<Props> = ({ title = APP_NAME, children }) => {
+  const dispatch = useAppDispatch();
+
+  const { account } = useAppSelector((state: any) => state.users);
+
+  const [cookies, removeCookie] = useCookies(["token"]);
+
   const router = useRouter();
+
+  /**
+   *
+   * Redirect if not logged-in
+   *
+   */
+  useEffect(() => {
+    if (!cookies?.token) {
+      router.push("/auth/login");
+    } else {
+      dispatch(getUserAccount({}));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cookies]);
+
+  const logout = () => {
+    removeCookie("token", "");
+    router.push("/auth/login");
+  };
+
+  console.log(account);
 
   return (
     <Page title={title}>
@@ -56,7 +87,7 @@ const PageAdmin: FC<Props> = ({ title = APP_NAME, children }) => {
               {/* TODO: Implement logout */}
               <span
                 className="text-blue-500 cursor-pointer"
-                onClick={() => router.push("/auth/login")}
+                onClick={() => logout()}
               >
                 Logout
               </span>

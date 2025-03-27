@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 
 import PageAdmin from "@/components/PageAdmin";
 import Panel from "@/components/Panel";
@@ -6,12 +6,30 @@ import ApexChart from "@/components/ApexChart";
 
 import { HEATMAP_DATA } from "@/utils/heatmap-data";
 
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { fetchJournalReport } from "@/redux/slices/journal";
+
 /**
  *
  * Dashboard
  *
  */
 const Dashboard: FC = () => {
+  const dispatch = useAppDispatch();
+
+  const { journalReport } = useAppSelector((state: any) => state.journal);
+
+  /**
+   *
+   * Load initial data
+   *
+   */
+  useEffect(() => {
+    dispatch(fetchJournalReport({}));
+  }, []);
+
+  console.log(journalReport);
+
   return (
     <PageAdmin title="Dashboard">
       <div className="flex flex-col gap-8">

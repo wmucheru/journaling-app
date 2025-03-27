@@ -8,6 +8,7 @@ import type { RootState } from "@/redux/store";
 interface IState {
   journal: any[];
   journalEntry: object;
+  journalReport: object;
   journalStatus: {
     message: string;
     error: boolean;
@@ -19,6 +20,7 @@ interface IState {
 const initialState: IState = {
   journal: [],
   journalEntry: {},
+  journalReport: {},
   journalStatus: {
     message: "",
     error: false,
@@ -56,6 +58,23 @@ export const fetchJournalEntry = createAsyncThunk(
       const response = await useAPI({
         type: "GET",
         url: `/journal/${id}`,
+      });
+
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+export const fetchJournalReport = createAsyncThunk(
+  types.FETCH_JOURNAL_REPORT,
+  async (filter: object | any = {}, { rejectWithValue }) => {
+    try {
+      const response = await useAPI({
+        type: "GET",
+        url: "/journal/report",
+        params: filter,
       });
 
       return response.data;
@@ -174,6 +193,35 @@ const slice = createSlice({
       const { journal, error, message } = action.payload;
 
       state.journal = journal;
+      state.journalStatus.error = error;
+      state.journalStatus.loading = false;
+      state.journalStatus.message = message;
+    });
+
+    /**
+     *
+     * Fetch report
+     *
+     */
+    builder.addCase(fetchJournalReport.pending, (state) => {
+      state.journalEntry = {};
+      state.journalStatus.loading = true;
+      state.journalStatus.saving = false;
+      state.journalStatus.message = "";
+    });
+
+    builder.addCase(fetchJournalReport.rejected, (state, action) => {
+      const { message, error }: any = action?.payload || {};
+
+      state.journalStatus.message = message;
+      state.journalStatus.error = error;
+      state.journalStatus.loading = false;
+    });
+
+    builder.addCase(fetchJournalReport.fulfilled, (state, action) => {
+      const { report, error, message } = action.payload;
+
+      state.journalReport = report;
       state.journalStatus.error = error;
       state.journalStatus.loading = false;
       state.journalStatus.message = message;

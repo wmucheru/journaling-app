@@ -56,5 +56,5 @@ app.listen(APP_PORT, APP_HOST, async () => {
   console.log(`Listening on ${APP_PORT}`);
 
   // Sync all models to tables in database
-  await DB.sync({});
+  await DB.sync({ alter: true });
 });
